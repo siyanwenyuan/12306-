@@ -1,4 +1,4 @@
-package com.chen.train.controller;
+package com.chen.train.member.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test")
-public class TestController {
+public class Test{
 
     @GetMapping("/user")
     public void test(){
-        System.out.println("hello world ");
+        System.out.println("hello world");
 
     }
+
 }
