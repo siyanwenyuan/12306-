@@ -12,6 +12,7 @@ public class Test{
     @GetMapping("/user")
     public void test(){
         System.out.println("hello world");
+        System.out.println("hahahhahah");
 
     }
 
