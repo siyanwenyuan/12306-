@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--xml扫描的文件映射路径，其中需要指定是mapper接口中的路径-->
+<mapper namespace="com.chen.train.member.mapper.MemberMapper">
+
+    <select id="count" resultType="int">
+        select count(*)
+        from member
+    </select>
+
+</mapper>
