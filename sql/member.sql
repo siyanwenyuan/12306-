@@ -6,3 +6,4 @@ create table `member` (
   unique key `mobile_unique` (`mobile`)
 ) engine=innodb default charset=utf8mb4 comment='会员';
 
+
