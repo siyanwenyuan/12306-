@@ -8,4 +8,6 @@ public interface MemberService {
 
 
   public  Integer count();
+
+  Long register(Long mobile);
 }
