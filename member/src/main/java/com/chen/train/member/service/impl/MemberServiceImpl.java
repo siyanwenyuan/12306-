@@ -3,6 +3,7 @@ package com.chen.train.member.service.impl;
 import com.chen.train.member.mapper.MemberMapper;
 import com.chen.train.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -14,6 +15,7 @@ public class MemberServiceImpl implements MemberService {
     private MemberMapper memberMapper;
     @Override
     public Integer count() {
-        return memberMapper.count();
+
+       return Math.toIntExact(memberMapper.countByExample(null));
     }
 }
