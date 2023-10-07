@@ -2,13 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chen.train.member.mapper.MemberMapper">
   <resultMap id="BaseResultMap" type="com.chen.train.member.domain.Member">
-    <result column="member_id" jdbcType="INTEGER" property="memberId" />
-    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
-    <result column="member_number" jdbcType="BIGINT" property="memberNumber" />
-    <result column="member_sex" jdbcType="VARCHAR" property="memberSex" />
-    <result column="member_age" jdbcType="INTEGER" property="memberAge" />
-    <result column="member_specialized" jdbcType="VARCHAR" property="memberSpecialized" />
-    <result column="member_grade" jdbcType="VARCHAR" property="memberGrade" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,8 +64,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    member_id, member_name, member_number, member_sex, member_age, member_specialized, 
-    member_grade
+    id, mobile
   </sql>
   <select id="selectByExample" parameterType="com.chen.train.member.domain.MemberExample" resultMap="BaseResultMap">
     select
@@ -86,6 +80,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from member
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <delete id="deleteByExample" parameterType="com.chen.train.member.domain.MemberExample">
     delete from member
     <if test="_parameter != null">
@@ -93,59 +97,25 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.chen.train.member.domain.Member">
-    insert into member (member_id, member_name, member_number, 
-      member_sex, member_age, member_specialized, 
-      member_grade)
-    values (#{memberId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{memberNumber,jdbcType=BIGINT}, 
-      #{memberSex,jdbcType=VARCHAR}, #{memberAge,jdbcType=INTEGER}, #{memberSpecialized,jdbcType=VARCHAR}, 
-      #{memberGrade,jdbcType=VARCHAR})
+    insert into member (id, mobile)
+    values (#{id,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.chen.train.member.domain.Member">
     insert into member
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="memberId != null">
-        member_id,
+      <if test="id != null">
+        id,
       </if>
-      <if test="memberName != null">
-        member_name,
-      </if>
-      <if test="memberNumber != null">
-        member_number,
-      </if>
-      <if test="memberSex != null">
-        member_sex,
-      </if>
-      <if test="memberAge != null">
-        member_age,
-      </if>
-      <if test="memberSpecialized != null">
-        member_specialized,
-      </if>
-      <if test="memberGrade != null">
-        member_grade,
+      <if test="mobile != null">
+        mobile,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="memberId != null">
-        #{memberId,jdbcType=INTEGER},
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
       </if>
-      <if test="memberName != null">
-        #{memberName,jdbcType=VARCHAR},
-      </if>
-      <if test="memberNumber != null">
-        #{memberNumber,jdbcType=BIGINT},
-      </if>
-      <if test="memberSex != null">
-        #{memberSex,jdbcType=VARCHAR},
-      </if>
-      <if test="memberAge != null">
-        #{memberAge,jdbcType=INTEGER},
-      </if>
-      <if test="memberSpecialized != null">
-        #{memberSpecialized,jdbcType=VARCHAR},
-      </if>
-      <if test="memberGrade != null">
-        #{memberGrade,jdbcType=VARCHAR},
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -158,26 +128,11 @@
   <update id="updateByExampleSelective" parameterType="map">
     update member
     <set>
-      <if test="record.memberId != null">
-        member_id = #{record.memberId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.memberName != null">
-        member_name = #{record.memberName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.memberNumber != null">
-        member_number = #{record.memberNumber,jdbcType=BIGINT},
-      </if>
-      <if test="record.memberSex != null">
-        member_sex = #{record.memberSex,jdbcType=VARCHAR},
-      </if>
-      <if test="record.memberAge != null">
-        member_age = #{record.memberAge,jdbcType=INTEGER},
-      </if>
-      <if test="record.memberSpecialized != null">
-        member_specialized = #{record.memberSpecialized,jdbcType=VARCHAR},
-      </if>
-      <if test="record.memberGrade != null">
-        member_grade = #{record.memberGrade,jdbcType=VARCHAR},
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -186,15 +141,24 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update member
-    set member_id = #{record.memberId,jdbcType=INTEGER},
-      member_name = #{record.memberName,jdbcType=VARCHAR},
-      member_number = #{record.memberNumber,jdbcType=BIGINT},
-      member_sex = #{record.memberSex,jdbcType=VARCHAR},
-      member_age = #{record.memberAge,jdbcType=INTEGER},
-      member_specialized = #{record.memberSpecialized,jdbcType=VARCHAR},
-      member_grade = #{record.memberGrade,jdbcType=VARCHAR}
+    set id = #{record.id,jdbcType=BIGINT},
+      mobile = #{record.mobile,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chen.train.member.domain.Member">
+    update member
+    <set>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chen.train.member.domain.Member">
+    update member
+    set mobile = #{mobile,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
