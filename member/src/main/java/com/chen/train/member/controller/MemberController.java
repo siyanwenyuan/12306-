@@ -1,6 +1,8 @@
 package com.chen.train.member.controller;
 
 
+import com.chen.train.common.resp.CommonResp;
+import com.chen.train.member.req.MemberRegisterReq;
 import com.chen.train.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +16,9 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/register")
-    public Long register(String mobile){
+    public CommonResp<Long> register(MemberRegisterReq memberRegisterReq){
 
-       return  memberService.register(mobile);
+       return new CommonResp<>(memberService.register(memberRegisterReq));
 
 
     }
