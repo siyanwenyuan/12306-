@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const routes = [
-  //这种加载方式，是项目打包的时候就会被编译，不适合大项目
+ /* //这种加载方式，是项目打包的时候就会被编译，不适合大项目
   {
     path: '/',
     name: 'home',
@@ -15,11 +14,16 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
+    component: () => import(/!* webpackChunkName: "about" *!/ '../views/AboutView.vue')
+  },*/
    {
     path: '/login',
     component: () => import( '../views/login.vue')
+  },
+
+  {
+    path: '/',
+    component: () => import( '../views/main.vue')
   }
 ]
 
