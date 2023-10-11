@@ -1,4 +1,4 @@
-package com.chen.train.common.util;
+package com.chen.train.gateway.util;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -42,7 +42,7 @@ public class JwtUtil {
     }
 
     public static boolean validate(String token) {
-
+        try {
             LOG.info("开始JWT token校验，token：{}", token);
             GlobalBouncyCastleProvider.setUseBouncyCastle(false);
             JWT jwt = JWTUtil.parseToken(token).setKey(key.getBytes());
@@ -50,7 +50,11 @@ public class JwtUtil {
             boolean validate = jwt.validate(0);
             LOG.info("JWT token校验结果：{}", validate);
             return validate;
+        } catch (Exception e) {
+            LOG.error("错误的code",e);
+            return false;
 
+        }
     }
 
     public static JSONObject getJSONObject(String token) {
