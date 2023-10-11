@@ -2,6 +2,7 @@ package com.chen.train.member.req;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.experimental.PackagePrivate;
 
 public class MemberLoginReq {
 
@@ -15,6 +16,9 @@ public class MemberLoginReq {
 
     @NotBlank(message = "验证码不能为空")
     private String code;
+
+
+
 
     public String getCode() {
         return code;
@@ -38,7 +42,6 @@ public class MemberLoginReq {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
-
 
 
     @Override

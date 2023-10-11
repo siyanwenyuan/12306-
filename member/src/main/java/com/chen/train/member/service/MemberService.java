@@ -6,8 +6,11 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.jwt.JWT;
+import cn.hutool.jwt.JWTUtil;
 import com.chen.train.common.exception.BusinessException;
 import com.chen.train.common.exception.BusinessExceptionEnum;
+import com.chen.train.common.util.JwtUtil;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.member.domain.Member;
 import com.chen.train.member.domain.MemberExample;
@@ -25,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MemberService {
@@ -99,8 +103,13 @@ public class MemberService {
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_NOT_EXIST);
         }
 
+        //
+
         //将查询得到的数据复制到返回对象中
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
+
+        String token = JwtUtil.createToken(memberLoginResp.getId(),memberLoginResp.getMobile());
+        memberLoginResp.setToken(token);
         return memberLoginResp;
 
 

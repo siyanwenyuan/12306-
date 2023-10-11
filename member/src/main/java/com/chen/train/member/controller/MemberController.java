@@ -23,46 +23,42 @@ public class MemberController {
 
     /**
      * 注册
+     *
      * @param memberRegisterReq
      * @return
      */
     @PostMapping("/register")
-    public CommonResp<Long> register(@Valid MemberRegisterReq memberRegisterReq){
+    public CommonResp<Long> register(@Valid MemberRegisterReq memberRegisterReq) {
 
-       return new CommonResp<>(memberService.register(memberRegisterReq));
+        return new CommonResp<>(memberService.register(memberRegisterReq));
 
 
     }
 
     /**
      * 发送短信验证码
+     *
      * @param memberSendCodeReq
-     * @return
-     * RequestBody  此注解表示传入的参数是json格式
+     * @return RequestBody  此注解表示传入的参数是json格式
      */
 
     @PostMapping("/send-code")
-    public CommonResp<Long> sendCode(@Valid @RequestBody MemberSendCodeReq memberSendCodeReq)
-
-    {
+    public CommonResp<Long> sendCode(@Valid @RequestBody MemberSendCodeReq memberSendCodeReq) {
         memberService.sendCode(memberSendCodeReq);
         return new CommonResp<>();
-
     }
 
     /**
      * 登录
+     *
      * @param memberLoginReq
      * @return
      */
     @PostMapping("/login")
-    public CommonResp<MemberLoginResp> login(@Valid @RequestBody MemberLoginReq memberLoginReq)
-    {
+    public CommonResp<MemberLoginResp> login(@Valid @RequestBody MemberLoginReq memberLoginReq) {
         MemberLoginResp resp = memberService.login(memberLoginReq);
-        return new  CommonResp<>(resp);
+        return new CommonResp<>(resp);
     }
-
-
 
 
 }

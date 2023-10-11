@@ -50,7 +50,6 @@ export default defineComponent({
   name: "login-view",
   setup() {
     const router = useRouter();
-
     const loginForm = reactive({
       mobile: '',
       code: '',
