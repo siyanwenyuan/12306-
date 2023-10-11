@@ -108,7 +108,9 @@ public class MemberService {
         //将查询得到的数据复制到返回对象中
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
 
+        //使用token
         String token = JwtUtil.createToken(memberLoginResp.getId(),memberLoginResp.getMobile());
+        //将token设置到返回结果中，返回给前端
         memberLoginResp.setToken(token);
         return memberLoginResp;
 
