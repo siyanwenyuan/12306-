@@ -40,6 +40,10 @@ public class MemberService {
     private MemberMapper memberMapper;
 
 
+
+    public int count() {
+        return Math.toIntExact(memberMapper.countByExample(null));
+    }
     public long register(MemberRegisterReq memberRegisterReq) {
 
         String mobile = memberRegisterReq.getMobile();
@@ -102,8 +106,6 @@ public class MemberService {
         if (!"8888".equals(code)) {
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_NOT_EXIST);
         }
-
-        //
 
         //将查询得到的数据复制到返回对象中
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);

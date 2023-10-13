@@ -48,10 +48,12 @@ public class LoginMemberFilter implements Ordered, GlobalFilter {
         boolean validate = JwtUtil.validate(token);
         if (validate) {
             LOG.info("token有效，放行该请求");
+            //请求被放行
             return chain.filter(exchange);
         } else {
             LOG.warn( "token无效，请求被拦截" );
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            //请求被中断
             return exchange.getResponse().setComplete();
         }
 

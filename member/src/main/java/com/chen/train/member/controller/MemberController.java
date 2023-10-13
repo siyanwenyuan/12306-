@@ -9,10 +9,7 @@ import com.chen.train.member.resp.MemberLoginResp;
 import com.chen.train.member.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/member")
@@ -21,6 +18,14 @@ public class MemberController {
     private MemberService memberService;
 
 
+
+    @GetMapping("/count")
+    public CommonResp<Integer> count() {
+        int count = memberService.count();
+        CommonResp<Integer> commonResp = new CommonResp<>();
+        commonResp.setContent(count);
+        return commonResp;
+    }
     /**
      * 注册
      *
