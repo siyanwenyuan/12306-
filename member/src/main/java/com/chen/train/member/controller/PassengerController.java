@@ -23,6 +23,5 @@ public class PassengerController {
     public CommonResp save(@Valid @RequestBody PassengerSaveReq passengerSaveReq) {
         passengerService.save(passengerSaveReq);
         return new CommonResp<>("添加乘客成功！");
-
     }
 }

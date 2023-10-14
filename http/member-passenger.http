@@ -1,0 +1,20 @@
+
+POST http://localhost:8000/member/passenger/save
+Content-Type: application/json
+//token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTcyNzI0MjksIm1vYmlsZSI6IjE4ODgyMzA2MDAyIiwiaWQiOjE2OTY2NzgyMTYzNTIsImV4cCI6MTY5NzM1ODgyOSwiaWF0IjoxNjk3MjcyNDI5fQ.wqyIbGN8fKjj061AvINzMgZ8SfeBHE13Kms1r6f9xz8
+token: {{token}}
+
+{
+  "memberId": "6",
+  "name": "王富贵",
+  "idCard": "5116278",
+  "type": "1"
+}
+
+
+
+
+
+
+
+###
