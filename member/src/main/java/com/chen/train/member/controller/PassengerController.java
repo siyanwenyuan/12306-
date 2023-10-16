@@ -1,15 +1,17 @@
 package com.chen.train.member.controller;
 
 
+import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
+import com.chen.train.member.req.PassengerQueryReq;
 import com.chen.train.member.req.PassengerSaveReq;
+import com.chen.train.member.resp.PassengerQueryResp;
 import com.chen.train.member.service.PassengerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/passenger")
@@ -24,4 +26,19 @@ public class PassengerController {
         passengerService.save(passengerSaveReq);
         return new CommonResp<>("添加乘客成功！");
     }
+
+    /**
+     * RequestBody 将json格式转化为Java对象所以此处不需要使用
+     * @param passengerQueryReq
+     * @return
+     */
+    @GetMapping("/query-list")
+    public CommonResp<List<PassengerQueryResp>> queryList(PassengerQueryReq passengerQueryReq){
+        //直接从本地线程变量中获取memberId
+        passengerQueryReq.setMemberId(LoginMemberContext.getId());
+        List<PassengerQueryResp> queryList = passengerService.queryList(passengerQueryReq);
+        return new  CommonResp<>(queryList);
+    }
+
+
 }

@@ -1,16 +1,23 @@
+GET http://localhost:8000/member/passenger/query-list
+Accept: application/json
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc0Mjg5NjAsIm1vYmlsZSI6IjE4ODgyMzA2MDAyIiwiaWQiOjE2OTY2NzgyMTYzNTIsImV4cCI6MTY5NzUxNTM2MCwiaWF0IjoxNjk3NDI4OTYwfQ.oOD8qHBqlW7fxnlHN-iuE1Z-QAAkeJ1xjGukkdBGd2g
+
+###
 
 
 ###
 
 POST http://localhost:8000/member/passenger/save
 Content-Type: application/json
-token: {{token}}
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc0MjY2MjUsIm1vYmlsZSI6IjE4ODgyMzA2MDAyIiwiaWQiOjE2OTY2NzgyMTYzNTIsImV4cCI6MTY5NzUxMzAyNSwiaWF0IjoxNjk3NDI2NjI1fQ.fukB40uxZq6XLV7aBhfno64LfmhAXoNSm6e2EcflQ0Y
 
 {
-  "name": "胡三",
+  "name": "胡四",
   "idCard": "51446278",
-  "type": "1"
+  "type": "2"
 }
+
+
 
 
 
