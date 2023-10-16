@@ -1,5 +1,6 @@
 package com.chen.train.member.req;
 
+import com.chen.train.common.req.PageReq;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

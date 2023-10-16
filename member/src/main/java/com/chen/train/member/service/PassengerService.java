@@ -52,8 +52,7 @@ public class PassengerService {
 
 
         //直接使用pagehelper中的分页插件，其中查询一页中的两条数据，然后需要写在sql之前
-        PageHelper.startPage(1,2);
-
+        PageHelper.startPage(passengerQueryReq.getPage(), passengerQueryReq.getSize());
         List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
         return BeanUtil.copyToList(passengers,PassengerQueryResp.class);
     }

@@ -1,7 +1,6 @@
-GET http://localhost:8000/member/passenger/query-list
+GET http://localhost:8000/member/passenger/query-list?page=1&size=2
 Accept: application/json
-token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc0Mjg5NjAsIm1vYmlsZSI6IjE4ODgyMzA2MDAyIiwiaWQiOjE2OTY2NzgyMTYzNTIsImV4cCI6MTY5NzUxNTM2MCwiaWF0IjoxNjk3NDI4OTYwfQ.oOD8qHBqlW7fxnlHN-iuE1Z-QAAkeJ1xjGukkdBGd2g
-
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTc0NjE4NzAsIm1vYmlsZSI6IjE4ODgyMzA2MDAyIiwiaWQiOjE2OTY2NzgyMTYzNTIsImV4cCI6MTY5NzU0ODI3MCwiaWF0IjoxNjk3NDYxODcwfQ.h3Zk48bPs1ZMpo5NxEAQ-faOWzscRWnMiKNK25nXtHk
 ###
 
 
