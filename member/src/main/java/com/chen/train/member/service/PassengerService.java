@@ -5,6 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.chen.train.common.context.LoginMemberContext;
+import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.member.domain.Passenger;
 import com.chen.train.member.domain.PassengerExample;
@@ -13,6 +14,7 @@ import com.chen.train.member.req.PassengerQueryReq;
 import com.chen.train.member.req.PassengerSaveReq;
 import com.chen.train.member.resp.PassengerQueryResp;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +43,7 @@ public class PassengerService {
      * 查询列表功能
      */
 
-    public List<PassengerQueryResp> queryList(PassengerQueryReq passengerQueryReq) {
+    public PageResp<PassengerQueryResp> queryList(PassengerQueryReq passengerQueryReq) {
 
         PassengerExample passengerExample=new PassengerExample();
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
@@ -54,7 +56,16 @@ public class PassengerService {
         //直接使用pagehelper中的分页插件，其中查询一页中的两条数据，然后需要写在sql之前
         PageHelper.startPage(passengerQueryReq.getPage(), passengerQueryReq.getSize());
         List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
-        return BeanUtil.copyToList(passengers,PassengerQueryResp.class);
+        PageInfo<Passenger> pageInfo=new PageInfo<>(passengers);
+
+        List<PassengerQueryResp> respList = BeanUtil.copyToList(passengers, PassengerQueryResp.class);
+        PageResp<PassengerQueryResp> pageResp=new PageResp<>();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(respList);
+
+
+        return pageResp;
+
     }
 
 

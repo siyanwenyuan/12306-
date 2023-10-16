@@ -3,6 +3,7 @@ package com.chen.train.member.controller;
 
 import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
+import com.chen.train.common.resp.PageResp;
 import com.chen.train.member.req.PassengerQueryReq;
 import com.chen.train.member.req.PassengerSaveReq;
 import com.chen.train.member.resp.PassengerQueryResp;
@@ -33,10 +34,10 @@ public class PassengerController {
      * @return
      */
     @GetMapping("/query-list")
-    public CommonResp<List<PassengerQueryResp>> queryList(PassengerQueryReq passengerQueryReq){
+    public CommonResp<PageResp<PassengerQueryResp>> queryList(PassengerQueryReq passengerQueryReq){
         //直接从本地线程变量中获取memberId
         passengerQueryReq.setMemberId(LoginMemberContext.getId());
-        List<PassengerQueryResp> queryList = passengerService.queryList(passengerQueryReq);
+        PageResp<PassengerQueryResp> queryList = passengerService.queryList(passengerQueryReq);
         return new  CommonResp<>(queryList);
     }
 
