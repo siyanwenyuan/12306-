@@ -1,19 +1,10 @@
 <template>
-  <a-layout-header class="header">
-    <div class="logo" />
-
-    <div style="float: right; color: white;">
-      您好：{{member.mobile}} &nbsp;&nbsp;
-      <router-link to="/login" style="color: white;">
-        退出登录
-      </router-link>
-    </div>
-
+  <a-layout-sider width="200" style="background: #fff">
     <a-menu
         v-model:selectedKeys="selectedKeys"
-        theme="dark"
-        mode="horizontal"
-        :style="{ lineHeight: '64px' }"
+        v-model:openKeys="openKeys"
+        mode="inline"
+        :style="{ height: '100%', borderRight: 0 }"
     >
       <a-menu-item key="/welcome">
         <router-link to="/welcome">
@@ -26,21 +17,19 @@
         </router-link>
       </a-menu-item>
     </a-menu>
-  </a-layout-header>
+  </a-layout-sider>
 </template>
 
 <script>
 
-import { defineComponent,ref,watch } from 'vue';
-import store from "@/store";
+import {defineComponent, ref, watch } from 'vue';
 import router from "@/router";
 
 
 
 export default defineComponent({
-  name: "the-header-view",
+  name: "the-sider-view",
   setup() {
-    let member = store.state.member;
     const selectedKeys = ref([]);
 
     watch(() => router.currentRoute.value.path, (newValue) => {
@@ -49,7 +38,6 @@ export default defineComponent({
       selectedKeys.value.push(newValue);
     }, {immediate: true});
     return {
-      member,
       selectedKeys
     };
   },
