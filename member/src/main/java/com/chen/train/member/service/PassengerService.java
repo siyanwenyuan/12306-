@@ -46,6 +46,9 @@ public class PassengerService {
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq passengerQueryReq) {
 
         PassengerExample passengerExample=new PassengerExample();
+        //添加一个降序排列,后面的反而显示在前面
+        passengerExample.setOrderByClause("id desc");
+
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
         //条件查询，必须使用createCriteria下面的方法,根据条件查询
         if(ObjectUtil.isNotEmpty(passengerQueryReq.getMemberId())){
@@ -62,8 +65,6 @@ public class PassengerService {
         PageResp<PassengerQueryResp> pageResp=new PageResp<>();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
-
-
         return pageResp;
 
     }
