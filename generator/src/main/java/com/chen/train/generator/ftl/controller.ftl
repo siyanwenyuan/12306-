@@ -4,10 +4,10 @@ package com.chen.train.member.controller;
 import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
 import com.chen.train.common.resp.PageResp;
-import com.chen.train.member.req.PassengerQueryReq;
-import com.chen.train.member.req.PassengerSaveReq;
-import com.chen.train.member.resp.PassengerQueryResp;
-import com.chen.train.member.service.PassengerService;
+import com.chen.train.member.req.${Domain}QueryReq;
+import com.chen.train.member.req.${Domain}SaveReq;
+import com.chen.train.member.resp.${Domain}QueryResp;
+import com.chen.train.member.service.${Domain}Service;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,29 +15,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/passenger")
-public class PassengerController {
+@RequestMapping("/${do_main}")
+public class ${Domain}Controller {
 
     @Autowired
 
-    private PassengerService passengerService;
+    private ${Domain}Service ${domain}Service;
 
     @PostMapping("/save")
-    public CommonResp save(@Valid @RequestBody PassengerSaveReq passengerSaveReq) {
-        passengerService.save(passengerSaveReq);
+    public CommonResp save(@Valid @RequestBody ${Domain}SaveReq ${domain}SaveReq) {
+        ${domain}Service.save(${domain}SaveReq);
         return new CommonResp<>("添加乘客成功！");
     }
 
     /**
      * RequestBody 将json格式转化为Java对象所以此处不需要使用
-     * @param passengerQueryReq
+     * @param ${domain}QueryReq
      * @return
      */
     @GetMapping("/query-list")
-    public CommonResp<PageResp <PassengerQueryResp>> queryList(PassengerQueryReq passengerQueryReq){
+    public CommonResp<PageResp <${Domain}QueryResp>> queryList(${Domain}QueryReq ${domain}QueryReq){
         //直接从本地线程变量中获取memberId
-        passengerQueryReq.setMemberId(LoginMemberContext.getId());
-        PageResp<PassengerQueryResp> queryList = passengerService.queryList(passengerQueryReq);
+        ${domain}QueryReq.setMemberId(LoginMemberContext.getId());
+        PageResp<${Domain}QueryResp> queryList = ${domain}Service.queryList(${domain}QueryReq);
         return new  CommonResp<>(queryList);
     }
 
@@ -49,7 +49,7 @@ public class PassengerController {
     public CommonResp<Object> delete(@PathVariable Long id)
     {
 
-        passengerService.delete(id);
+        ${domain}Service.delete(id);
         return new CommonResp<>("删除成功");
     }
 

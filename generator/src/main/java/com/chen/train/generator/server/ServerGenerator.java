@@ -13,47 +13,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerGenerator {
-  /*  static String toPath=" ";
-    static String pomPath="generator\\pom.xml";
+
+
+    static String serverPath = "[module]/src/main/java/com/chen/train/[module]/";
+    static String pomPath = "generator\\pom.xml";
+
     static {
-        new File(toPath).mkdirs();
-    }
-
-    public static void main(String[] args) throws IOException, TemplateException, DocumentException {
-
-        getGeneratorPath();
-
-
-    }
-
-    private static String getGeneratorPath() throws DocumentException {
-        SAXReader saxReader=new SAXReader();
-        Map<String,String> map=new HashMap<>();
-        map.put("pom","http://maven.apache.org/POM/4.0.0");
-        saxReader.getDocumentFactory().setXPathNamespaceURIs(map);
-        Document document=saxReader.read(pomPath);
-        Node node=document.selectSingleNode("//pom:configurationFile");
-        System.out.println(node.getText());
-        return node.getText();
-    }*/
-
-    static String servicePath="[module]/src/main/java/com/chen/train/[module]/service/";
-    static String pomPath="generator\\pom.xml";
-    static{
-        new File(servicePath).mkdirs();
+        new File(serverPath).mkdirs();
     }
 
     public static void main(String[] args) throws IOException, TemplateException, Exception {
 
         String generatorPath = getGeneratorPath();
-
         String module = generatorPath.replace("src/main/resources/generator-config-", "").replace(".xml", "");
-
-        System.out.println("module:"+module);
-
-        servicePath = servicePath.replace("[module]", module);
-        System.out.println("servicePath:"+servicePath);
-
+        System.out.println("module:" + module);
+        serverPath = serverPath.replace("[module]", module);
+        System.out.println("servicePath:" + serverPath);
 
 
         // 读取table节点
@@ -66,20 +41,49 @@ public class ServerGenerator {
 
 
         String Domain = domainObjectName.getText();
+        //替换
         String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
         String do_main = tableName.getText().replaceAll("_", "-");
 
 
+        //将参数封装进去
         Map<String, Object> param = new HashMap<>();
         param.put("Domain", Domain);
         param.put("domain", domain);
         param.put("do_main", do_main);
-        System.out.println("param:"+param);
+        System.out.println("param:" + param);
 
-        FreemarkerUtil.initConfig("service.ftl");
-        FreemarkerUtil.generator(servicePath+Domain+"Service.java",param);
+        gen(Domain, param, "service");
+        gen(Domain, param, "controller");
     }
 
+    /**
+     * 决定生成的为哪个层
+     *
+     * @param Domain
+     * @param param
+     * @throws IOException
+     * @throws TemplateException
+     */
+
+    private static void gen(String Domain, Map<String, Object> param, String target) throws IOException, TemplateException {
+        FreemarkerUtil.initConfig(target + ".ftl");
+        String toPath = serverPath + target + "/";
+        new File(toPath).mkdirs();
+        String Target = target.substring(0, 1).toUpperCase() + target.substring(1);
+        String fileName = toPath + Domain + Target + ".java";
+        FreemarkerUtil.generator(fileName, param);
+    }
+
+
+    /**
+     * 得到pom文件
+     * 读取pom文件
+     * 返回路径
+     *
+     * @return
+     * @throws DocumentException
+     */
     private static String getGeneratorPath() throws DocumentException {
         SAXReader saxReader = new SAXReader();
         Map<String, String> map = new HashMap<String, String>();
