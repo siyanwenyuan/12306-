@@ -6,6 +6,8 @@ import store from './store'
 import * as Icons from '@ant-design/icons-vue';
 import axios from "axios";
 import Antd, {notification} from 'ant-design-vue';
+import './assets/js/enums';
+
 
 
 

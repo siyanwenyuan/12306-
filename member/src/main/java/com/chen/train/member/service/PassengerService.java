@@ -78,6 +78,14 @@ public class PassengerService {
 
     }
 
+    /**
+     * 删除功能
+     */
+
+    public void delete(Long id){
+        passengerMapper.deleteByPrimaryKey(id);
+    }
+
 
 }
 
