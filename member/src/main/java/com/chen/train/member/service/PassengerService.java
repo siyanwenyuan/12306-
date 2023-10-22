@@ -25,7 +25,7 @@ public class PassengerService {
 
 
     @Autowired
-    private PassengerMapper passengerMapper;
+    private  PassengerMapper passengerMapper;
 
     public void save(PassengerSaveReq passengerSaveReq) {
         DateTime now = new DateTime().now();
