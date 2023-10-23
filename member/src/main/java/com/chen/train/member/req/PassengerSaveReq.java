@@ -1,11 +1,10 @@
 package com.chen.train.member.req;
 
-import com.chen.train.common.req.PageReq;
+import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.Date;
 
 public class PassengerSaveReq {
 

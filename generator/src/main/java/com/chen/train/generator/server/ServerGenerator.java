@@ -11,9 +11,7 @@ import org.dom4j.io.SAXReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServerGenerator {
 
@@ -58,14 +56,13 @@ public class ServerGenerator {
         DbUtil.password = password.getText();
 
 
-
         String Domain = domainObjectName.getText();
         //替换
         String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
         String do_main = tableName.getText().replaceAll("_", "-");
-        String tableNameCn=  DbUtil.getTableComment(tableName.getText());
+        String tableNameCn = DbUtil.getTableComment(tableName.getText());
         List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
-
+        Set<String> typeSet = getJavaTypes(fieldList);
 
 
         //将参数封装进去
@@ -73,10 +70,15 @@ public class ServerGenerator {
         param.put("Domain", Domain);
         param.put("domain", domain);
         param.put("do_main", do_main);
+        param.put("tableNameCn",tableNameCn);
+        param.put("fieldList",fieldList);
+        param.put("typeSet",typeSet);
         System.out.println("param:" + param);
 
-        gen(Domain, param, "service");
-        gen(Domain, param, "controller");
+        gen(Domain, param, "service","service");
+        gen(Domain, param, "controller","controller");
+        gen(Domain,param,"req","saveReq");
+
     }
 
     /**
@@ -88,9 +90,9 @@ public class ServerGenerator {
      * @throws TemplateException
      */
 
-    private static void gen(String Domain, Map<String, Object> param, String target) throws IOException, TemplateException {
+    private static void gen(String Domain, Map<String, Object> param,String packageName, String target) throws IOException, TemplateException {
         FreemarkerUtil.initConfig(target + ".ftl");
-        String toPath = serverPath + target + "/";
+        String toPath = serverPath + packageName + "/";
         new File(toPath).mkdirs();
         String Target = target.substring(0, 1).toUpperCase() + target.substring(1);
         String fileName = toPath + Domain + Target + ".java";
@@ -116,6 +118,18 @@ public class ServerGenerator {
         System.out.println(node.getText());
         return node.getText();
 
+    }
+
+    /**
+     * 获取所有的Java类型，使用Set去重
+     */
+    private static Set<String> getJavaTypes(List<Field> fieldList) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < fieldList.size(); i++) {
+            Field field = fieldList.get(i);
+            set.add(field.getJavaType());
+        }
+        return set;
     }
 
 
