@@ -4,7 +4,6 @@ package com.chen.train.member.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.member.domain.Passenger;
@@ -34,7 +33,6 @@ public class PassengerService {
         if(ObjectUtil.isNull(passenger.getId()))
         {
             //获取本地线程变量中的memberId，而不再需要进行传参设置
-            passenger.setMemberId(LoginMemberContext.getId());
             passenger.setId(SnowUtil.getSnowflakeNextId());
             passenger.setCreateTime(now);
             passenger.setUpdateTime(now);
@@ -60,9 +58,6 @@ public class PassengerService {
 
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
         //条件查询，必须使用createCriteria下面的方法,根据条件查询
-        if(ObjectUtil.isNotEmpty(passengerQueryReq.getMemberId())){
-           criteria.andMemberIdEqualTo(passengerQueryReq.getMemberId());
-        }
 
 
         //直接使用pagehelper中的分页插件，其中查询一页中的两条数据，然后需要写在sql之前

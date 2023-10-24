@@ -1,12 +1,12 @@
-package com.chen.train.member.req;
+package com.chen.train.${module}.req;
 
 import com.chen.train.common.req.PageReq;
 
-public class PassengerQueryReq extends PageReq {
+public class ${Domain}QueryReq extends PageReq {
 
     @Override
     public String toString() {
-        return "PassengerQueryReq{" +
+        return "${Domain}QueryReq{" +
                 "} " + super.toString();
     }
 }

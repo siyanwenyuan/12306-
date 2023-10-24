@@ -1,36 +1,48 @@
 package com.chen.train.member.resp;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-
-/**
- * 此处需要进行对象的序列化
- * 为了解决前后端中的long的数据精度问题
- * 在后端中的long的精度大于js中的精度
- * 所以需要将后端中的long序列化为string，这样可以解决精度丢失问题
- * 此处使用注解来解决。也可以使用全局配置类解决
- */
 public class PassengerQueryResp {
-    //序列化对象，将其转换为string
+
+    /**
+     * id
+     */
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
+
+    /**
+     * 会员id
+     */
     @JsonSerialize(using= ToStringSerializer.class)
     private Long memberId;
 
+    /**
+     * 姓名
+     */
     private String name;
 
+    /**
+     * 身份证
+     */
     private String idCard;
 
+    /**
+     * 旅客类型|枚举[PassengerTypeEnum]
+     */
     private String type;
 
-
+    /**
+     * 新增时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
+    /**
+     * 修改时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 

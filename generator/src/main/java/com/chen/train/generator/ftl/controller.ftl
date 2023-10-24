@@ -1,13 +1,13 @@
-package com.chen.train.member.controller;
+package com.chen.train.${module}.controller;
 
 
 import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
 import com.chen.train.common.resp.PageResp;
-import com.chen.train.member.req.${Domain}QueryReq;
-import com.chen.train.member.req.${Domain}SaveReq;
-import com.chen.train.member.resp.${Domain}QueryResp;
-import com.chen.train.member.service.${Domain}Service;
+import com.chen.train.${module}.req.${Domain}QueryReq;
+import com.chen.train.${module}.req.${Domain}SaveReq;
+import com.chen.train.${module}.resp.${Domain}QueryResp;
+import com.chen.train.${module}.service.${Domain}Service;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +35,7 @@ public class ${Domain}Controller {
      */
     @GetMapping("/query-list")
     public CommonResp<PageResp <${Domain}QueryResp>> queryList(${Domain}QueryReq ${domain}QueryReq){
-        //直接从本地线程变量中获取memberId
-        ${domain}QueryReq.setMemberId(LoginMemberContext.getId());
+        //直接从本地线程变量中获取${module}Id
         PageResp<${Domain}QueryResp> queryList = ${domain}Service.queryList(${domain}QueryReq);
         return new  CommonResp<>(queryList);
     }

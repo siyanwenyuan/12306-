@@ -1,18 +1,17 @@
-package com.chen.train.member.service;
+package com.chen.train.${module}.service;
 
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
-import com.chen.train.member.domain.${Domain};
-import com.chen.train.member.domain.${Domain}Example;
-import com.chen.train.member.mapper.${Domain}Mapper;
-import com.chen.train.member.req.${Domain}QueryReq;
-import com.chen.train.member.req.${Domain}SaveReq;
-import com.chen.train.member.resp.${Domain}QueryResp;
+import com.chen.train.${module}.domain.${Domain};
+import com.chen.train.${module}.domain.${Domain}Example;
+import com.chen.train.${module}.mapper.${Domain}Mapper;
+import com.chen.train.${module}.req.${Domain}QueryReq;
+import com.chen.train.${module}.req.${Domain}SaveReq;
+import com.chen.train.${module}.resp.${Domain}QueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,7 @@ public class ${Domain}Service {
         //如果id为空，则说明是新增
         if(ObjectUtil.isNull(${domain}.getId()))
         {
-            //获取本地线程变量中的memberId，而不再需要进行传参设置
-            ${domain}.setMemberId(LoginMemberContext.getId());
+            //获取本地线程变量中的${module}Id，而不再需要进行传参设置
             ${domain}.setId(SnowUtil.getSnowflakeNextId());
             ${domain}.setCreateTime(now);
             ${domain}.setUpdateTime(now);
@@ -60,9 +58,6 @@ public class ${Domain}Service {
 
         ${Domain}Example.Criteria criteria = ${domain}Example.createCriteria();
         //条件查询，必须使用createCriteria下面的方法,根据条件查询
-        if(ObjectUtil.isNotEmpty(${domain}QueryReq.getMemberId())){
-           criteria.andMemberIdEqualTo(${domain}QueryReq.getMemberId());
-        }
 
 
         //直接使用pagehelper中的分页插件，其中查询一页中的两条数据，然后需要写在sql之前
