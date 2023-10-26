@@ -3,6 +3,7 @@ package com.chen.train.generator.gen;
 
 import cn.hutool.core.util.StrUtil;
 
+import com.chen.train.business.enums.SeatColEnum;
 import com.chen.train.business.enums.SeatTypeEnum;
 import com.chen.train.business.enums.TrainTypeEnum;
 import com.chen.train.member.enums.PassengerTypeEnum;
@@ -34,8 +35,9 @@ public class EnumGenerator {
 
 
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
-            /*
+
             toJson(SeatColEnum.class, bufferObject, bufferArray);
+            /*
             toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);
 */
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
