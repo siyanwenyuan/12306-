@@ -44,6 +44,6 @@
        <!-- <table tableName="station" domainObjectName="Station"/>-->
 <!--        <table tableName="business" domainObjectName="Business"/>-->
         <!--这个决定生成哪张表-->
-        <table tableName="train" domainObjectName="Train"/>
+        <table tableName="train_station" domainObjectName="TrainStation"/>
     </context>
 </generatorConfiguration>
