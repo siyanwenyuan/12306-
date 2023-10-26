@@ -51,6 +51,12 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.chen</groupId>
+            <artifactId>business</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -61,6 +67,7 @@
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.4.0</version>
                 <configuration>
+                    <!--这个路径决定读取哪个配置文件-->
                     <configurationFile>src/main/resources/generator-config-business.xml</configurationFile>
 
                    <!-- <configurationFile>src/main/resources/generator-config-member.xml</configurationFile>

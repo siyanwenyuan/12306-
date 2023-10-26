@@ -41,10 +41,9 @@
                              targetPackage="com.chen.train.business.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="station" domainObjectName="Station"/>
+       <!-- <table tableName="station" domainObjectName="Station"/>-->
 <!--        <table tableName="business" domainObjectName="Business"/>-->
-<!--
-        <table tableName="ticket" domainObjectName="Ticket"/>
--->
+        <!--这个决定生成哪张表-->
+        <table tableName="train" domainObjectName="Train"/>
     </context>
 </generatorConfiguration>

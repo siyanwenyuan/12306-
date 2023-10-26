@@ -3,6 +3,7 @@ package com.chen.train.generator.gen;
 
 import cn.hutool.core.util.StrUtil;
 
+import com.chen.train.business.enums.TrainTypeEnum;
 import com.chen.train.member.enums.PassengerTypeEnum;
 
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnumGenerator {
-     static String path = "web/src/assets/js/enums.js";
+     static String path = "admin/src/assets/js/enums.js";
   //  static String path = "admin/src/assets/js/enums.js";
 
     public static void main(String[] args) {
@@ -24,8 +25,13 @@ public class EnumGenerator {
         StringBuffer bufferArray = new StringBuffer();
         long begin = System.currentTimeMillis();
         try {
+
+            //此处表示生成哪个枚举
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
-           /* toJson(TrainTypeEnum.class, bufferObject, bufferArray);
+          toJson(TrainTypeEnum.class, bufferObject, bufferArray);
+
+
+          /*
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatColEnum.class, bufferObject, bufferArray);
             toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);

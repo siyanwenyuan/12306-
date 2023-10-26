@@ -2,7 +2,7 @@
   <a-layout-header class="header">
     <div class="logo" >
     <router-link to="/welcome" style="color: white; font-size: 18px">
-      WC12306
+      WC12306控制台
     </router-link>
     </div>
   <div style="float: right;collapse: white;">
