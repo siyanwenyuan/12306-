@@ -25,7 +25,6 @@ for (const i in icons) {
  */
 axios.interceptors.request.use(function (config) {
     console.log('请求参数：', config);
-
     return config;
 }, error => {
     return Promise.reject(error);

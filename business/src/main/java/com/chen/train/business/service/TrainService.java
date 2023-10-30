@@ -73,6 +73,21 @@ public class TrainService {
 
     }
 
+
+    /**
+     *实现查询车次所有编号：
+     */
+    public List<TrainQueryResp> queryAll(){
+
+        TrainExample trainExample=new TrainExample();
+        trainExample.setOrderByClause("code desc");
+        List<Train> trainList = trainMapper.selectByExample(trainExample);
+        return BeanUtil.copyToList(trainList,TrainQueryResp.class);
+    }
+
+
+
+
     /**
      * 删除功能
      */

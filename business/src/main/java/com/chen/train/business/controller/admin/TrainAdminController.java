@@ -51,5 +51,19 @@ public class TrainAdminController {
         return new CommonResp<>("删除成功");
     }
 
+    /**
+     * 查询所有
+     */
+
+    @GetMapping("/query-all")
+    public CommonResp<List<TrainQueryResp>> queryList()
+    {
+
+        List<TrainQueryResp> list = trainService.queryAll();
+        return new CommonResp<>(list);
+
+    }
+
+
 
 }

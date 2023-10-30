@@ -59,7 +59,7 @@ export default defineComponent({
     const sendCode = () => {
       axios.post("/member/member/send-code", {
         mobile: loginForm.mobile
-      }).then(response => {
+      }).then(response => {trainStatio
         let data = response.data;
         if (data.success) {
           notification.success({description: '发送验证码成功！'});
