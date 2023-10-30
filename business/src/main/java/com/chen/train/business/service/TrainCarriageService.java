@@ -4,6 +4,7 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.chen.train.business.enums.SeatColEnum;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.business.domain.TrainCarriage;
@@ -28,6 +29,14 @@ public class TrainCarriageService {
 
     public void save(TrainCarriageSaveReq trainCarriageSaveReq) {
         DateTime now = new DateTime().now();
+
+        //自动计算出列数和总座位数
+        List<SeatColEnum> seatColEnums = SeatColEnum.getColsByType(trainCarriageSaveReq.getSeatType());
+        trainCarriageSaveReq.setColCount(seatColEnums.size());
+        trainCarriageSaveReq.setSeatCount(trainCarriageSaveReq.getSeatCount()*trainCarriageSaveReq.getRowCount());
+
+
+
         TrainCarriage trainCarriage = BeanUtil.copyProperties(trainCarriageSaveReq, TrainCarriage.class);
         //如果id为空，则说明是新增
         if(ObjectUtil.isNull(trainCarriage.getId()))
