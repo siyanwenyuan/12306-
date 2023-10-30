@@ -1,5 +1,6 @@
 package com.chen.train.business.controller.admin;
 
+import com.chen.train.business.service.TrainSeatService;
 import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
 import com.chen.train.common.resp.PageResp;
@@ -20,6 +21,9 @@ public class TrainAdminController {
     @Autowired
 
     private TrainService trainService;
+
+    @Autowired
+    private TrainSeatService trainSeatService;
 
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody TrainSaveReq trainSaveReq) {
@@ -63,6 +67,20 @@ public class TrainAdminController {
         return new CommonResp<>(list);
 
     }
+
+    /**
+     * 根据车次生成座位
+     * @param
+     * @return
+     */
+
+    @GetMapping("/gen-seat/{trainCode}")
+    public CommonResp<Object> genSeat(@PathVariable String trainCode){
+
+        trainSeatService.genTrainSeat(trainCode);
+        return new CommonResp<>();
+    }
+
 
 
 

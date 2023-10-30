@@ -82,6 +82,21 @@ public class StationService {
     }
 
 
+    /**
+     * 查询所有火车
+     *
+     */
+
+    public List<StationQueryResp> queryAllStation(){
+
+        StationExample stationExample=new StationExample();
+        stationExample.setOrderByClause("name_pinyin asc");
+        List<Station> stationList = stationMapper.selectByExample(stationExample);
+        return BeanUtil.copyToList(stationList,StationQueryResp.class);
+
+    }
+
+
 }
 
 

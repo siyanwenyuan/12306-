@@ -51,5 +51,17 @@ public class StationAdminController {
         return new CommonResp<>("删除成功");
     }
 
+    /**
+     * 查询所有火车
+     */
+
+    @GetMapping("/query-all")
+    public CommonResp<List<StationQueryResp>> queryAll(){
+
+        List<StationQueryResp> stationQueryResps = stationService.queryAllStation();
+        return new CommonResp<>(stationQueryResps);
+    }
+
+
 
 }
