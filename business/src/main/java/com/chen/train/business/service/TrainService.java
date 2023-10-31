@@ -4,6 +4,9 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.chen.train.business.domain.Station;
+import com.chen.train.common.exception.BusinessException;
+import com.chen.train.common.exception.BusinessExceptionEnum;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.business.domain.Train;
@@ -32,6 +35,13 @@ public class TrainService {
         //如果id为空，则说明是新增
         if(ObjectUtil.isNull(train.getId()))
         {
+            //保存之前需要校验唯一键是否存在
+            Train trainDB = selectByUnique(trainSaveReq.getCode());
+
+            if(ObjectUtil.isNotEmpty(trainDB)){
+                //如果不是空，则不需要添加，则需要向前端抛出一个异常
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
+            }
             //获取本地线程变量中的businessId，而不再需要进行传参设置
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);
@@ -44,6 +54,23 @@ public class TrainService {
             trainMapper.updateByPrimaryKey(train);
         }
 
+    }
+
+    /**
+     * 此处的唯一键是code
+     */
+
+    private Train selectByUnique(String Code){
+        TrainExample trainExample=new TrainExample();
+        trainExample.createCriteria().andCodeEqualTo(Code);
+        List<Train> trainList = trainMapper.selectByExample(trainExample);
+        if(ObjectUtil.isNotEmpty(trainList)){
+            return trainList.get(0);
+        }else{
+
+
+            return null;
+        }
     }
 
     /**

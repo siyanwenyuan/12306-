@@ -4,6 +4,9 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.chen.train.business.domain.Station;
+import com.chen.train.common.exception.BusinessException;
+import com.chen.train.common.exception.BusinessExceptionEnum;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.business.domain.TrainStation;
@@ -32,6 +35,22 @@ public class TrainStationService {
         //如果id为空，则说明是新增
         if(ObjectUtil.isNull(trainStation.getId()))
         {
+
+            //保存之前需要校验唯一键是否存在
+            TrainStation trainStationDB = selectByUnique(trainStationSaveReq.getTrainCode(), trainStationSaveReq.getIndex());
+
+            if(ObjectUtil.isNotEmpty(trainStationDB)){
+                //如果不是空，则不需要添加，则需要向前端抛出一个异常
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_STATION_INDEX_UNIQUE_ERROR);
+            }
+
+            //保存之前需要校验唯一键是否存在
+            TrainStation trainStationDB1 = selectByUnique(trainStationSaveReq.getTrainCode(), trainStationSaveReq.getName());
+
+            if(ObjectUtil.isNotEmpty(trainStationDB1)){
+                //如果不是空，则不需要添加，则需要向前端抛出一个异常
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_STATION_NAME_UNIQUE_ERROR);
+            }
             //获取本地线程变量中的businessId，而不再需要进行传参设置
             trainStation.setId(SnowUtil.getSnowflakeNextId());
             trainStation.setCreateTime(now);
@@ -45,6 +64,47 @@ public class TrainStationService {
         }
 
     }
+
+    /**
+     * 编写唯一键的生成方法
+     * 按照code生成
+     */
+
+    private TrainStation selectByUnique(String trainCode,Integer index)
+    {
+        TrainStationExample trainStationExample=new TrainStationExample();
+        trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode).andIndexEqualTo(index);
+        List<TrainStation> trainStationList = trainStationMapper.selectByExample(trainStationExample);
+        if(ObjectUtil.isNotEmpty(trainStationList))
+        {
+            return trainStationList.get(0);
+        }else{
+            return null;
+
+        }
+    }
+
+    /**
+     * 编写唯一键
+     * 按照code 和 name
+     */
+
+    private TrainStation selectByUnique(String trainCode,String name)
+    {
+
+        TrainStationExample trainStationExample=new TrainStationExample();
+        trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode).andNameEqualTo(name);
+        List<TrainStation> trainStationList = trainStationMapper.selectByExample(trainStationExample);
+        if(ObjectUtil.isNotEmpty(trainStationList))
+        {
+            return trainStationList.get(0);
+
+        }else{
+            return null;
+        }
+    }
+
+
 
     /**
      * 查询列表功能

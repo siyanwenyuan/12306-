@@ -4,7 +4,10 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.chen.train.business.domain.Station;
 import com.chen.train.business.enums.SeatColEnum;
+import com.chen.train.common.exception.BusinessException;
+import com.chen.train.common.exception.BusinessExceptionEnum;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.business.domain.TrainCarriage;
@@ -41,6 +44,14 @@ public class TrainCarriageService {
         //如果id为空，则说明是新增
         if(ObjectUtil.isNull(trainCarriage.getId()))
         {
+
+            //保存之前需要校验唯一键是否存在
+            TrainCarriage carriageDB = selectByUnique(trainCarriageSaveReq.getTrainCode(), trainCarriageSaveReq.getIndex());
+
+            if(ObjectUtil.isNotEmpty(carriageDB)){
+                //如果不是空，则不需要添加，则需要向前端抛出一个异常
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CARRIAGE_INDEX_UNIQUE_ERROR);
+            }
             //获取本地线程变量中的businessId，而不再需要进行传参设置
             trainCarriage.setId(SnowUtil.getSnowflakeNextId());
             trainCarriage.setCreateTime(now);
@@ -51,6 +62,22 @@ public class TrainCarriageService {
             //否则，则是修改，此时需要加上修改时间
             trainCarriage.setUpdateTime(now);
             trainCarriageMapper.updateByPrimaryKey(trainCarriage);
+        }
+
+    }
+
+    /**
+     * 生成唯一键的方法
+     */
+    private TrainCarriage selectByUnique(String trainCode,Integer index){
+
+        TrainCarriageExample trainCarriageExample=new TrainCarriageExample();
+        trainCarriageExample.createCriteria().andTrainCodeEqualTo(trainCode).andIndexEqualTo(index);
+        List<TrainCarriage> trainCarriageList = trainCarriageMapper.selectByExample(trainCarriageExample);
+        if(ObjectUtil.isNotEmpty(trainCarriageList)){
+            return trainCarriageList.get(0);
+        }else{
+            return null;
         }
 
     }

@@ -2,8 +2,11 @@ package com.chen.train.business.service;
 
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.chen.train.common.exception.BusinessException;
+import com.chen.train.common.exception.BusinessExceptionEnum;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.business.domain.Station;
@@ -32,6 +35,14 @@ public class StationService {
         //如果id为空，则说明是新增
         if(ObjectUtil.isNull(station.getId()))
         {
+            //保存之前需要校验唯一键是否存在
+            Station stationDB = selectByUnique(stationSaveReq.getName());
+
+            if(ObjectUtil.isNotEmpty(stationDB)){
+                //如果不是空，则不需要添加，则需要向前端抛出一个异常
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
+            }
+
             //获取本地线程变量中的businessId，而不再需要进行传参设置
             station.setId(SnowUtil.getSnowflakeNextId());
             station.setCreateTime(now);
@@ -44,6 +55,17 @@ public class StationService {
             stationMapper.updateByPrimaryKey(station);
         }
 
+    }
+
+    private Station  selectByUnique(String name) {
+        StationExample stationExample=new StationExample();
+        stationExample.createCriteria().andNameEqualTo(name);
+        List<Station> stationList = stationMapper.selectByExample(stationExample);
+        if(CollUtil.isNotEmpty(stationList)){
+            return stationList.get(0);
+        }else{
+            return null;
+        }
     }
 
     /**
