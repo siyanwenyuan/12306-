@@ -5,7 +5,7 @@ import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+/*@Configuration*/
 public class QuartzConfig {
 
     /**
@@ -13,7 +13,7 @@ public class QuartzConfig {
      *
      * @return
      */
-    @Bean
+   /* @Bean*/
     public JobDetail jobDetail() {
         return JobBuilder.newJob(TestJob.class)
                 .withIdentity("TestJob", "test")
@@ -26,7 +26,7 @@ public class QuartzConfig {
      *
      * @return
      */
-    @Bean
+   /* @Bean*/
     public Trigger trigger() {
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail())

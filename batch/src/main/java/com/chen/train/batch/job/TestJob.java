@@ -13,10 +13,11 @@ public class TestJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
 
-        /**
+/**
          * 此如果不关闭任务的并发执行，会出现问题
          * 因此需要添加注解，关闭任务的并发执行
          */
+
         System.out.println("开始");
         try {
             Thread.sleep(3000);
