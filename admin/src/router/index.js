@@ -49,6 +49,18 @@ const routes = [
                 ]
             },
             {
+                path: 'business/',
+                children: [
+
+                    {
+                        path: 'daily-train',
+                        component: () => import('../views/main/business/daily-train.vue'),
+                    }
+                ]
+            },
+
+
+            {
                 path: 'batch/',
                 children: [{
                     path: 'job',
