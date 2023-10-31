@@ -1,58 +1,76 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 
 const routes = [
 
-  {
-    path: '/',
-    component: () => import( '../views/main.vue'),
+    {
+        path: '/',
+        component: () => import( '../views/main.vue'),
 
 
-      children: [{
-          path: 'welcome',
-          component: () => import('../views/main/welcome.vue'),
-      },
-          {
-              path: 'about',
-              component: () => import('../views/main/about.vue'),
-          },
+        children: [{
+            path: 'welcome',
+            component: () => import('../views/main/welcome.vue'),
+        },
+            {
+                path: 'about',
+                component: () => import('../views/main/about.vue'),
+            },
+            {
+                path: 'base/',
+                children: [
+                    {
+                        path: 'station',
+                        component: () => import('../views/main/base/station.vue'),
+                    },
+                    {
+                        path: 'train',
+                        component: () => import('../views/main/base/train.vue'),
+                    },
+                    {
+                        path: 'train-station',
+                        component: () => import('../views/main/base/train-station.vue'),
+                    },
 
-          {
-              path: 'station',
-              component: () => import('../views/main/station.vue'),
-          },
-          {
-              path: 'train',
-              component: () => import('../views/main/train.vue'),
-          },
-          {
-              path: 'train-station',
-              component: () => import('../views/main/train-station.vue'),
-          },
+                    {
+                        path: 'train-carriage',
+                        component: () => import('../views/main/base/train-carriage.vue'),
+                    },
 
-          {
-              path: 'train-carriage',
-              component: () => import('../views/main/train-carriage.vue'),
-          },
+                    {
+                        path: 'train-seat',
+                        component: () => import('../views/main/base/train-seat.vue'),
+                    },
+                    {
+                        path: 'batch/job',
+                        name: 'batch/job',
+                        component: () => import('../views/main/batch/job.vue')
+                    }
+                ]
+            },
+            {
+                path: 'batch/',
+                children: [{
+                    path: 'job',
+                    component: () => import('../views/main/batch/job.vue')
+                }]
 
-          {
-              path: 'train-seat',
-              component: () => import('../views/main/train-seat.vue'),
-          },
+            },
+
+        ]
+    },
 
 
-      ]
-
-  },
     {
         path: '',
         redirect: '/welcome'
     },
 
+
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 export default router

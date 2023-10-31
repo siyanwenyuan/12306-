@@ -15,6 +15,14 @@ public class SchedulerConfig {
     @Resource
     private MyJobFactory myJobFactory;
 
+
+    /**
+     * 配置数据库
+     * 和数据库连接的配置
+     * @param dataSource
+     * @return
+     * @throws IOException
+     */
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSource) throws IOException {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();

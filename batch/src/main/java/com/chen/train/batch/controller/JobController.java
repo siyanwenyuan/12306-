@@ -165,7 +165,7 @@ public class JobController {
         return commonResp;
     }
 
-    @RequestMapping(value="/query")
+    @RequestMapping(value = "/query")
     public CommonResp query() {
         LOG.info("查看所有定时任务开始");
         CommonResp commonResp = new CommonResp();
