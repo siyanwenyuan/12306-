@@ -81,7 +81,7 @@ public class TrainService {
 
         TrainExample trainExample=new TrainExample();
         //添加一个降序排列,后面的反而显示在前面
-        trainExample.setOrderByClause("id desc");
+        trainExample.setOrderByClause("code asc");
 
         TrainExample.Criteria criteria = trainExample.createCriteria();
         //条件查询，必须使用createCriteria下面的方法,根据条件查询

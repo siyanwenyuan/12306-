@@ -34,7 +34,7 @@ public class TrainSaveReq {
     /**
      * 始发站拼音
      */
-    @NotBlank(message = "【始发站拼音】不能为空")
+  // @NotBlank(message = "【始发站拼音】不能为空")
     private String startPinyin;
 
     /**

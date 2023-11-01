@@ -153,14 +153,21 @@ export default defineComponent({
     }
     ];
 
-
+/*
     watch(()=>train.value.start,()=>{
       if(Tool.isNotEmpty(train.value.start)){
         train.value.statrtPinyin=pinyin(train.value.start,{toneType: 'none'}).replaceAll(" ","");
       }else{
         train.value.startPinyin="";
       }
-    },{immediate:true});
+    },{immediate:true});*/
+    watch(() => train.value.start, ()=>{
+      if (Tool.isNotEmpty(train.value.start)) {
+        train.value.startPinyin = pinyin(train.value.start, { toneType: 'none'}).replaceAll(" ", "");
+      } else {
+        train.value.startPinyin = "";
+      }
+    }, {immediate: true});
 
     watch(()=>train.value.end,()=>{
       if(Tool.isNotEmpty(train.value.end)){

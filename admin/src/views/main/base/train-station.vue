@@ -1,6 +1,7 @@
 <template>
   <p>
     <a-space>
+
       <a-button type="primary" @click="handleQuery()">刷新</a-button>
       <a-button type="primary" @click="onAdd">新增</a-button>
     </a-space>
@@ -144,7 +145,7 @@ export default defineComponent({
 
     watch(()=>trainStation.value.name,()=>{
       if(Tool.isNotEmpty(trainStation.value.name)){
-        trainStation.value.namePinyin=pinyin(trainStation.value.name,{toneType: 'none'}).replaceAll(" ","");
+        trainStation.value.namePinyin = pinyin(trainStation.value.name,{toneType: 'none'}).replaceAll(" ", "");
       }else{
         trainStation.value.namePinyin="";
       }

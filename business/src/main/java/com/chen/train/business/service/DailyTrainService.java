@@ -54,10 +54,21 @@ public class DailyTrainService {
 
         DailyTrainExample dailyTrainExample=new DailyTrainExample();
         //添加一个降序排列,后面的反而显示在前面
-        dailyTrainExample.setOrderByClause("id desc");
+        dailyTrainExample.setOrderByClause("date desc,code asc");
 
         DailyTrainExample.Criteria criteria = dailyTrainExample.createCriteria();
         //条件查询，必须使用createCriteria下面的方法,根据条件查询
+
+        if(ObjectUtil.isNotNull(dailyTrainQueryReq.getDate()))
+        {
+            criteria.andDateEqualTo(dailyTrainQueryReq.getDate());
+
+        }
+        if(ObjectUtil.isNotEmpty(dailyTrainQueryReq.getCode()))
+        {
+            criteria.andCodeEqualTo(dailyTrainQueryReq.getCode());
+
+        }
 
 
         //直接使用pagehelper中的分页插件，其中查询一页中的两条数据，然后需要写在sql之前
