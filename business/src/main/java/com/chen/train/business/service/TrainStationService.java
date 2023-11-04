@@ -5,6 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.chen.train.business.domain.Station;
+import com.chen.train.business.domain.TrainExample;
 import com.chen.train.common.exception.BusinessException;
 import com.chen.train.common.exception.BusinessExceptionEnum;
 import com.chen.train.common.resp.PageResp;
@@ -142,6 +143,22 @@ public class TrainStationService {
     }
 
 
+    /**
+     * 查询某车次的所有车站信息
+     * @param trainCode
+     * @return
+     */
+    public List<TrainStation> selectByTrainCode(String trainCode)
+    {
+        TrainStationExample trainStationExample=new TrainStationExample();
+        trainStationExample.setOrderByClause("'index' asc");
+        trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        List<TrainStation> trainStationList = trainStationMapper.selectByExample(trainStationExample
+        );
+
+        return trainStationList;
+
+    }
 }
 
 

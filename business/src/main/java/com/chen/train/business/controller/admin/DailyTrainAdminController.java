@@ -1,5 +1,4 @@
-package com.chen.train.business.controller;
-
+package com.chen.train.business.controller.admin;
 
 import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
@@ -10,8 +9,10 @@ import com.chen.train.business.resp.DailyTrainQueryResp;
 import com.chen.train.business.service.DailyTrainService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -50,6 +51,24 @@ public class DailyTrainAdminController {
 
         dailyTrainService.delete(id);
         return new CommonResp<>("删除成功");
+    }
+
+    /**
+     * 执行定时任务接口
+     */
+  /*  @GetMapping("gen-daily/{date}")
+    public CommonResp<Object> genDaily(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date)
+    {
+        dailyTrainService.genDaily(date);
+        return new CommonResp<>();
+
+    }*/
+
+
+    @GetMapping("/gen-daily/{date}")
+    public CommonResp<Object> genDaily(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        dailyTrainService.genDaily(date);
+        return new CommonResp<>();
     }
 
 

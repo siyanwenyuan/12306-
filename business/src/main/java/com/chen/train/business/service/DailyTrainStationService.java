@@ -34,26 +34,25 @@ public class DailyTrainStationService {
     private static final Logger LOG = LoggerFactory.getLogger(DailyTrainStationService.class);
 
 
+    @Autowired
+    private TrainStationService trainStationService;
 
     @Autowired
-    private  DailyTrainStationMapper dailyTrainStationMapper;
+    private DailyTrainStationMapper dailyTrainStationMapper;
 
-   /* @Resource
-    private TrainStationService trainStationService;*/
 
     public void save(DailyTrainStationSaveReq dailyTrainStationSaveReq) {
         DateTime now = new DateTime().now();
         DailyTrainStation dailyTrainStation = BeanUtil.copyProperties(dailyTrainStationSaveReq, DailyTrainStation.class);
         //如果id为空，则说明是新增
-        if(ObjectUtil.isNull(dailyTrainStation.getId()))
-        {
+        if (ObjectUtil.isNull(dailyTrainStation.getId())) {
             //获取本地线程变量中的businessId，而不再需要进行传参设置
             dailyTrainStation.setId(SnowUtil.getSnowflakeNextId());
             dailyTrainStation.setCreateTime(now);
             dailyTrainStation.setUpdateTime(now);
             dailyTrainStationMapper.insert(dailyTrainStation);
 
-        }else{
+        } else {
             //否则，则是修改，此时需要加上修改时间
             dailyTrainStation.setUpdateTime(now);
             dailyTrainStationMapper.updateByPrimaryKey(dailyTrainStation);
@@ -67,7 +66,7 @@ public class DailyTrainStationService {
 
     public PageResp<DailyTrainStationQueryResp> queryList(DailyTrainStationQueryReq dailyTrainStationQueryReq) {
 
-        DailyTrainStationExample dailyTrainStationExample=new DailyTrainStationExample();
+        DailyTrainStationExample dailyTrainStationExample = new DailyTrainStationExample();
         //添加一个降序排列,后面的反而显示在前面
         dailyTrainStationExample.setOrderByClause("date desc, train_code asc, `index` asc");
 
@@ -81,14 +80,13 @@ public class DailyTrainStationService {
         }
 
 
-
         //直接使用pagehelper中的分页插件，其中查询一页中的两条数据，然后需要写在sql之前
         PageHelper.startPage(dailyTrainStationQueryReq.getPage(), dailyTrainStationQueryReq.getSize());
         List<DailyTrainStation> dailyTrainStations = dailyTrainStationMapper.selectByExample(dailyTrainStationExample);
-        PageInfo<DailyTrainStation> pageInfo=new PageInfo<>(dailyTrainStations);
+        PageInfo<DailyTrainStation> pageInfo = new PageInfo<>(dailyTrainStations);
 
         List<DailyTrainStationQueryResp> respList = BeanUtil.copyToList(dailyTrainStations, DailyTrainStationQueryResp.class);
-        PageResp<DailyTrainStationQueryResp> pageResp=new PageResp<>();
+        PageResp<DailyTrainStationQueryResp> pageResp = new PageResp<>();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
         return pageResp;
@@ -99,60 +97,45 @@ public class DailyTrainStationService {
      * 删除功能
      */
 
-    public void delete(Long id){
+    public void delete(Long id) {
         dailyTrainStationMapper.deleteByPrimaryKey(id);
     }
 
-   /* @Transactional
+
+    /**
+     * 执行每日车次车站生成
+     */
+    @Transactional
     public void genDaily(Date date, String trainCode) {
-        LOG.info("生成日期【{}】车次【{}】的车站信息开始", DateUtil.formatDate(date), trainCode);
-
-        // 删除某日某车次的车站信息
+        LOG.info("开始生成日期【{}】车次【{}】的车站信息");
+        //首先需要删除已经存在的改车次的车站信息
         DailyTrainStationExample dailyTrainStationExample = new DailyTrainStationExample();
-        dailyTrainStationExample.createCriteria()
-                .andDateEqualTo(date)
-                .andTrainCodeEqualTo(trainCode);
+        dailyTrainStationExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
         dailyTrainStationMapper.deleteByExample(dailyTrainStationExample);
+        //查询某一个车次的所有车站信息
+        List<TrainStation> trainStationList = trainStationService.selectByTrainCode(trainCode);
 
-        // 查出某车次的所有的车站信息
-        List<TrainStation> stationList = trainStationService.selectByTrainCode(trainCode);
-        if (CollUtil.isEmpty(stationList)) {
-            LOG.info("该车次没有车站基础数据，生成该车次的车站信息结束");
+
+        if (CollUtil.isEmpty(trainStationList)) {
+            LOG.info("查到的该车次的车站的基础信息为空,则生成失败");
             return;
-        }
 
-        for (TrainStation trainStation : stationList) {
-            DateTime now = DateTime.now();
+        }
+        for (TrainStation trainStation : trainStationList
+        ) {
+            DateTime now = new  DateTime().now();
             DailyTrainStation dailyTrainStation = BeanUtil.copyProperties(trainStation, DailyTrainStation.class);
             dailyTrainStation.setId(SnowUtil.getSnowflakeNextId());
-            dailyTrainStation.setCreateTime(now);
             dailyTrainStation.setUpdateTime(now);
+            dailyTrainStation.setCreateTime(now);
             dailyTrainStation.setDate(date);
             dailyTrainStationMapper.insert(dailyTrainStation);
+
+
         }
-        LOG.info("生成日期【{}】车次【{}】的车站信息结束", DateUtil.formatDate(date), trainCode);
-    }
 
-    *//**
-     * 按车次查询全部车站
-     *//*
-    public long countByTrainCode(Date date, String trainCode) {
-        DailyTrainStationExample example = new DailyTrainStationExample();
-        example.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
-        long stationCount = dailyTrainStationMapper.countByExample(example);
-        return stationCount;
-    }
 
-    *//**
-     * 按车次日期查询车站列表，用于界面显示一列车经过的车站
-     *//*
-    public List<DailyTrainStationQueryResp> queryByTrain(Date date, String trainCode) {
-        DailyTrainStationExample dailyTrainStationExample = new DailyTrainStationExample();
-        dailyTrainStationExample.setOrderByClause("`index` asc");
-        dailyTrainStationExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
-        List<DailyTrainStation> list = dailyTrainStationMapper.selectByExample(dailyTrainStationExample);
-        return BeanUtil.copyToList(list, DailyTrainStationQueryResp.class);
-    }*/
+    }
 
 
 }

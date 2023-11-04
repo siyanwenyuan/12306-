@@ -152,6 +152,18 @@ public class TrainSeatService {
 
     }
 
+    public List<TrainSeat> selectByTrainCode(String trainCode)
+    {
+        TrainSeatExample trainSeatExample=new TrainSeatExample();
+        trainSeatExample.setOrderByClause("'id' asc");
+        trainSeatExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        List<TrainSeat> trainSeatList = trainSeatMapper.selectByExample(trainSeatExample
+        );
+
+        return trainSeatList;
+
+    }
+
 
 }
 

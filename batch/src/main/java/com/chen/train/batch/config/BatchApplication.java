@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @ComponentScan("com.chen")
 @MapperScan("com.chen.train.batch.mapper")
+@MapperScan("com.chen.train")
 @EnableFeignClients("com.chen.train.batch.feign")//开启feign组件，加上调用的接口的路径
 public class BatchApplication {
 

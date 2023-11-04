@@ -4,14 +4,12 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.chen.train.business.domain.Station;
+import com.chen.train.business.domain.*;
 import com.chen.train.business.enums.SeatColEnum;
 import com.chen.train.common.exception.BusinessException;
 import com.chen.train.common.exception.BusinessExceptionEnum;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
-import com.chen.train.business.domain.TrainCarriage;
-import com.chen.train.business.domain.TrainCarriageExample;
 import com.chen.train.business.mapper.TrainCarriageMapper;
 import com.chen.train.business.req.TrainCarriageQueryReq;
 import com.chen.train.business.req.TrainCarriageSaveReq;
@@ -125,6 +123,9 @@ public class TrainCarriageService {
         trainCarriageExampleCriteria.andTrainCodeEqualTo(trainCode);
         return trainCarriageMapper.selectByExample(trainCarriageExample);
     }
+
+
+
 
 
 

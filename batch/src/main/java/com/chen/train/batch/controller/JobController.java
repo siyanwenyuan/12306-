@@ -3,7 +3,6 @@ package com.chen.train.batch.controller;
 import com.chen.train.batch.req.CronJobReq;
 import com.chen.train.batch.resp.CronJobResp;
 import com.chen.train.common.resp.CommonResp;
-import com.chen.train.common.resp.CommonResp;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.triggers.CronTriggerImpl;
@@ -28,6 +27,8 @@ public class JobController {
 
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
+
+
 
     @RequestMapping(value = "/run")
     public CommonResp<Object> run(@RequestBody CronJobReq cronJobReq) throws SchedulerException {
