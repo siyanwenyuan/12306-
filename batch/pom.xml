@@ -20,6 +20,8 @@
 
     <dependencies>
 
+
+
         <dependency>
             <groupId>com.chen</groupId>
             <artifactId>common</artifactId>

@@ -1,12 +1,16 @@
+GET http://localhost:8003/batch/Test
+Accept: application/json
+
+###
 
 POST http://localhost:8000/batch/admin/job/run
 Content-Type: application/json
+
 
 {
   "name": "com.chen.train.batch.job.DailyTrainJob",
   "jobGroupName": "default"
 }
-
 
 ###
 POST http://localhost:8000/batch/admin/job/delete

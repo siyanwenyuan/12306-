@@ -1,14 +1,18 @@
 package com.chen.train.batch.job;
 
+import com.chen.train.batch.feign.BusinessFeign;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 //关闭并发执行
 @DisallowConcurrentExecution
 public class TestJob implements Job {
+
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
@@ -19,11 +23,10 @@ public class TestJob implements Job {
          */
 
         System.out.println("开始");
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
+
+
+
         System.out.println("结束");
 
 

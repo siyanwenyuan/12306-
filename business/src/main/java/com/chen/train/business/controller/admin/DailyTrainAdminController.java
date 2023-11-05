@@ -72,4 +72,15 @@ public class DailyTrainAdminController {
     }
 
 
+    /**
+     * 测试远程调用
+     */
+    @GetMapping("/hello")
+    public String getHello(){
+
+        return "chenwan Hello";
+
+    }
+
+
 }

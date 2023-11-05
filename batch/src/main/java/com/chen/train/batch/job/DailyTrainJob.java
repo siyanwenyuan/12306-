@@ -31,11 +31,14 @@ public class DailyTrainJob implements Job {
         // 增加日志流水号
         MDC.put("LOG_ID", System.currentTimeMillis() + RandomUtil.randomString(3));
         LOG.info("生成15天后的车次数据开始");
+        businessFeign.hello();
+
         Date date = new Date();
         DateTime dateTime = DateUtil.offsetDay(date, 15);
         Date offsetDate = dateTime.toJdkDate();
         CommonResp<Object> commonResp = businessFeign.genDaily(offsetDate);
         LOG.info("生成15天后的车次数据结束，结果：{}", commonResp);
+
 
     }
 }
