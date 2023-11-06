@@ -1,7 +1,6 @@
 package com.chen.train.business.controller;
 
 
-import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.CommonResp;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.business.req.DailyTrainTicketQueryReq;
@@ -12,21 +11,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/admin/daily-train-ticket")
-public class DailyTrainTicketAdminController {
+@RequestMapping("/daily-train-ticket")
+public class DailyTrainTicketController {
 
     @Autowired
 
     private DailyTrainTicketService dailyTrainTicketService;
 
-    @PostMapping("/save")
-    public CommonResp save(@Valid @RequestBody DailyTrainTicketSaveReq dailyTrainTicketSaveReq) {
-        dailyTrainTicketService.save(dailyTrainTicketSaveReq);
-        return new CommonResp<>("添加乘客成功！");
-    }
 
     /**
      * RequestBody 将json格式转化为Java对象所以此处不需要使用
@@ -41,16 +33,6 @@ public class DailyTrainTicketAdminController {
     }
 
 
-    /**
-     * 删除功能
-     */
-    @DeleteMapping("delete/{id}")
-    public CommonResp<Object> delete(@PathVariable Long id)
-    {
-
-        dailyTrainTicketService.delete(id);
-        return new CommonResp<>("删除成功");
-    }
 
 
 }
