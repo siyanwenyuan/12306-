@@ -12,6 +12,7 @@
            :loading="loading">
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'operation'">
+
         <a-space>
           <a-popconfirm
               title="删除后不可恢复，确认删除?"
