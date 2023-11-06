@@ -148,15 +148,24 @@ public class TrainStationService {
      * @param trainCode
      * @return
      */
-    public List<TrainStation> selectByTrainCode(String trainCode)
+  /*  public List<TrainStation> selectByTrainCode(String trainCode)
     {
         TrainStationExample trainStationExample=new TrainStationExample();
-        trainStationExample.setOrderByClause("'index' asc");
+        trainStationExample.setOrderByClause("`index` asc");
         trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode);
         List<TrainStation> trainStationList = trainStationMapper.selectByExample(trainStationExample
         );
 
         return trainStationList;
+
+    }*/
+    public List<TrainStation> selectByTrainCode(String trainCode) {
+        TrainStationExample trainStationExample = new TrainStationExample();
+        trainStationExample.setOrderByClause("`index` asc");
+        trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode);
+
+        List<TrainStation> trainStations = trainStationMapper.selectByExample(trainStationExample);
+        return trainStations;
 
     }
 }

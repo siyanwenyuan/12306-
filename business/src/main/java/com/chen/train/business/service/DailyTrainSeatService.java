@@ -4,6 +4,7 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.chen.train.business.domain.*;
@@ -105,7 +106,8 @@ public class DailyTrainSeatService {
 
 
     public void genDaily(Date date, String trainCode) {
-        LOG.info("开始生成日期【{}】车次【{}】的车站信息");
+        LOG.info("生成日期【{}】车次【{}】的座位信息开始", DateUtil.formatDate(date), trainCode);
+
         //首先需要删除已经存在的改车次的车站信息
         DailyTrainSeatExample dailyTrainSeatExample = new DailyTrainSeatExample();
         dailyTrainSeatExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
@@ -118,7 +120,7 @@ public class DailyTrainSeatService {
 
 
         if (CollUtil.isEmpty(trainSeatList)) {
-            LOG.info("查到的该车次的车站的基础信息为空,则生成失败");
+            LOG.info("该车次没有座位基础数据，生成该车次的座位信息结束");
             return;
 
         }
@@ -135,6 +137,29 @@ public class DailyTrainSeatService {
 
 
         }
+        LOG.info("生成日期【{}】车次【{}】的座位信息结束", DateUtil.formatDate(date), trainCode);
+
+
+
+    }
+
+    public int countSeat(Date date,String trainCode,String seatType)
+    {
+
+        DailyTrainSeatExample example=new DailyTrainSeatExample();
+        example.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode)
+                        .andSeatTypeEqualTo(seatType);
+
+
+        //查询座位个数
+        long count = dailyTrainSeatMapper.countByExample(example);
+        //如果是0 返回-1
+        if(count==0L)
+        {
+            return -1;
+        }
+
+        return (int) count;
 
 
     }

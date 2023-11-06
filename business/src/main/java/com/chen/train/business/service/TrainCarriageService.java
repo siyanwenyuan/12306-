@@ -116,11 +116,18 @@ public class TrainCarriageService {
     }
 
     //查找当前车次下所有的车厢
-    public List<TrainCarriage> selectByTrainCode(String trainCode){
+  /*  public List<TrainCarriage> selectByTrainCode(String trainCode){
         TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
         trainCarriageExample.setOrderByClause("'index' asc");
         TrainCarriageExample.Criteria trainCarriageExampleCriteria = trainCarriageExample.createCriteria();
         trainCarriageExampleCriteria.andTrainCodeEqualTo(trainCode);
+        return trainCarriageMapper.selectByExample(trainCarriageExample);
+    }*/
+    public List<TrainCarriage> selectByTrainCode(String trainCode) {
+        TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
+        trainCarriageExample.setOrderByClause("`index` asc");
+        TrainCarriageExample.Criteria criteria = trainCarriageExample.createCriteria();
+        criteria.andTrainCodeEqualTo(trainCode);
         return trainCarriageMapper.selectByExample(trainCarriageExample);
     }
 

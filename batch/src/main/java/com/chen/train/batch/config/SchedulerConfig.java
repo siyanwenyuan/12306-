@@ -1,6 +1,7 @@
 package com.chen.train.batch.config;
 
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,7 @@ import java.io.IOException;
 @Configuration
 public class SchedulerConfig {
 
-    @Resource
+    @Autowired
     private MyJobFactory myJobFactory;
 
 
@@ -23,8 +24,17 @@ public class SchedulerConfig {
      * @return
      * @throws IOException
      */
-    @Bean
+   /* @Bean
     public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSource) throws IOException {
+        SchedulerFactoryBean factory = new SchedulerFactoryBean();
+        factory.setDataSource(dataSource);
+        factory.setJobFactory(myJobFactory);
+        factory.setStartupDelay(2);
+        return factory;
+    }*/
+
+    @Bean
+    public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource){
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setJobFactory(myJobFactory);

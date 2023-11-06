@@ -4,6 +4,7 @@ package com.chen.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.chen.train.business.domain.*;
@@ -111,7 +112,8 @@ public class DailyTrainCarriageService {
 
 
     public void genDaily(Date date, String trainCode) {
-        LOG.info("开始生成日期【{}】车次【{}】的车站信息");
+        LOG.info("生成日期【{}】车次【{}】的车厢信息开始", DateUtil.formatDate(date), trainCode);
+
         //首先需要删除已经存在的改车次的车站信息
         DailyTrainCarriageExample dailyTrainCarriageExample = new DailyTrainCarriageExample();
         dailyTrainCarriageExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
@@ -121,7 +123,8 @@ public class DailyTrainCarriageService {
 
 
         if (CollUtil.isEmpty(trainCarriageList)) {
-            LOG.info("查到的该车次的车站的基础信息为空,则生成失败");
+            LOG.info("该车次没有车厢基础数据，生成该车次的车厢信息结束");
+
             return;
 
         }
@@ -137,6 +140,8 @@ public class DailyTrainCarriageService {
 
 
         }
+        LOG.info("生成日期【{}】车次【{}】的车厢信息结束", DateUtil.formatDate(date), trainCode);
+
 
 
     }

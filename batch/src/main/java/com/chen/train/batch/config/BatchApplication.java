@@ -15,6 +15,14 @@ import org.springframework.core.env.Environment;
 @MapperScan("com.chen.train.batch.mapper")
 @MapperScan("com.chen.train")
 @EnableFeignClients("com.chen.train.batch.feign")//开启feign组件，加上调用的接口的路径
+
+
+/*@SpringBootApplication
+@ComponentScan("com.chen")
+@MapperScan("com.chen.train.*.mapper")
+@MapperScan("com.chen.train.batch.job")
+@MapperScan("com.chen.train.batch.feign")
+@EnableFeignClients("com.chen.train.batch.feign")*/
 public class BatchApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(BatchApplication.class);

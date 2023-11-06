@@ -107,14 +107,14 @@ public class DailyTrainStationService {
      */
     @Transactional
     public void genDaily(Date date, String trainCode) {
-        LOG.info("开始生成日期【{}】车次【{}】的车站信息");
+        LOG.info("生成日期【{}】车次【{}】的车站信息开始", DateUtil.formatDate(date), trainCode);
         //首先需要删除已经存在的改车次的车站信息
         DailyTrainStationExample dailyTrainStationExample = new DailyTrainStationExample();
         dailyTrainStationExample.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
         dailyTrainStationMapper.deleteByExample(dailyTrainStationExample);
         //查询某一个车次的所有车站信息
         List<TrainStation> trainStationList = trainStationService.selectByTrainCode(trainCode);
-
+        System.out.println(trainStationList);
 
         if (CollUtil.isEmpty(trainStationList)) {
             LOG.info("查到的该车次的车站的基础信息为空,则生成失败");
