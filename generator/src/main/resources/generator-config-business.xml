@@ -56,7 +56,8 @@
 <!--
         <table tableName="daily_train_seat" domainObjectName="DailyTrainSeat"/>
 -->
-        <table tableName="daily_train_ticket" domainObjectName="DailyTrainTicket"/>
+        <!--<table tableName="daily_train_ticket" domainObjectName="DailyTrainTicket"/>-->
+        <table tableName="confirm_order" domainObjectName="ConfirmOrder"/>
 
 
     </context>

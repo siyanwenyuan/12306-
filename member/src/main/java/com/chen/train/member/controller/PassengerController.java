@@ -52,5 +52,16 @@ public class PassengerController {
         return new CommonResp<>("删除成功");
     }
 
+    /**
+     * 查询所有我的乘客接口
+     */
+
+    @GetMapping("/query-mine")
+    public CommonResp<List<PassengerQueryResp>> queryMine(){
+
+        List<PassengerQueryResp> passengerQueryRespList = passengerService.queryMine();
+        return new CommonResp<>(passengerQueryRespList);
+
+    }
 
 }

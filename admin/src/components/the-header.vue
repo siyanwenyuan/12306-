@@ -1,8 +1,8 @@
 <template>
   <a-layout-header class="header">
     <div class="logo" >
-    <router-link to="/welcome" style="color: white; font-size: 18px">
-      WC12306控制台
+    <router-link to="/welcome" style="color: white; font-size: 15px">
+      火车购票后台管理系统
     </router-link>
     </div>
   <div style="float: right;collapse: white;">

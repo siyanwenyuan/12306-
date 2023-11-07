@@ -3,6 +3,7 @@ package com.chen.train.generator.gen;
 
 import cn.hutool.core.util.StrUtil;
 
+import com.chen.train.business.enums.ConfirmOrderStatusEnum;
 import com.chen.train.business.enums.SeatColEnum;
 import com.chen.train.business.enums.SeatTypeEnum;
 import com.chen.train.business.enums.TrainTypeEnum;
@@ -19,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnumGenerator {
-    // static String path = "admin/src/assets/js/enums.js";
-  static String path = "web/src/assets/js/enums.js";
+    static String path = "admin/src/assets/js/enums.js";
+    //static String path = "web/src/assets/js/enums.js";
 
     public static void main(String[] args) {
         StringBuffer bufferObject = new StringBuffer();
@@ -30,16 +31,12 @@ public class EnumGenerator {
 
             //此处表示生成哪个枚举
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
-          toJson(TrainTypeEnum.class, bufferObject, bufferArray);
-
-
-
+            toJson(TrainTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
-
             toJson(SeatColEnum.class, bufferObject, bufferArray);
-            /*
             toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);
-*/
+
+
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
         } catch (Exception e) {
@@ -117,6 +114,7 @@ public class EnumGenerator {
 
     /**
      * 写文件
+     *
      * @param stringBuffer
      */
     public static void writeJs(StringBuffer stringBuffer) {
@@ -129,8 +127,7 @@ public class EnumGenerator {
             osw.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 out.close();
             } catch (Exception e) {

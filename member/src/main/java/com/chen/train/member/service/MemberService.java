@@ -8,17 +8,21 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
+import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.exception.BusinessException;
 import com.chen.train.common.exception.BusinessExceptionEnum;
+import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.JwtUtil;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.member.domain.Member;
 import com.chen.train.member.domain.MemberExample;
+import com.chen.train.member.domain.PassengerExample;
 import com.chen.train.member.mapper.MemberMapper;
 import com.chen.train.member.req.MemberLoginReq;
 import com.chen.train.member.req.MemberRegisterReq;
 import com.chen.train.member.req.MemberSendCodeReq;
 import com.chen.train.member.resp.MemberLoginResp;
+import com.chen.train.member.resp.PassengerQueryResp;
 import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,4 +138,5 @@ public class MemberService {
 
         }
     }
+
 }

@@ -4,6 +4,7 @@ package com.chen.train.member.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.chen.train.common.context.LoginMemberContext;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.member.domain.Passenger;
@@ -79,6 +80,22 @@ public class PassengerService {
 
     public void delete(Long id){
         passengerMapper.deleteByPrimaryKey(id);
+    }
+
+
+    /**
+     * 查询我的所有乘客
+     */
+
+    public List<PassengerQueryResp> queryMine(){
+        PassengerExample passengerExample=new PassengerExample();
+
+        passengerExample.setOrderByClause("name asc");
+        passengerExample.createCriteria().andMemberIdEqualTo(LoginMemberContext.getId());
+
+        List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
+        return BeanUtil.copyToList(passengers,PassengerQueryResp.class);
+
     }
 
 
