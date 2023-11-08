@@ -48,7 +48,6 @@ public class DailyTrainTicketService {
     private DailyTrainSeatService dailyTrainSeatService;
 
 
-
     public void save(DailyTrainTicketSaveReq dailyTrainTicketSaveReq) {
         DateTime now = new DateTime().now();
         DailyTrainTicket dailyTrainTicket = BeanUtil.copyProperties(dailyTrainTicketSaveReq, DailyTrainTicket.class);
@@ -121,7 +120,7 @@ public class DailyTrainTicketService {
      */
 
     @Transactional
-    public void genDaily(DailyTrain dailyTrain,Date date, String trainCode) {
+    public void genDaily(DailyTrain dailyTrain, Date date, String trainCode) {
         /**
          * 先删除已经存在的每日余票信息
          */
@@ -140,7 +139,7 @@ public class DailyTrainTicketService {
          */
 
         List<TrainStation> trainStations = trainStationService.selectByTrainCode(trainCode);
-        LOG.info("生成日期{}的该车次{}的余票信息开始", DateUtil.formatDate(date),trainCode);
+        LOG.info("生成日期{}的该车次{}的余票信息开始", DateUtil.formatDate(date), trainCode);
 
         if (ObjectUtil.isEmpty(trainStations)) {
             LOG.info("该车次没有车站的基础数据，生成该车次的车站基础信息结束");
@@ -148,23 +147,23 @@ public class DailyTrainTicketService {
         }
 
 
-        DateTime now= DateTime.now();
+        DateTime now = DateTime.now();
 
 
         //此处需要的是单向嵌套循环，则需要通过索引的方式进行
         for (int i = 0; i < trainStations.size(); i++) {
 
-                 //得到起始站
+            //得到起始站
             TrainStation trainStationStart = trainStations.get(i);
-            BigDecimal sumKM=BigDecimal.ZERO;
+            BigDecimal sumKM = BigDecimal.ZERO;
             for (int j = (i + 1); j < trainStations.size(); j++) {
                 //得到终点站
                 TrainStation trainStationEnd = trainStations.get(j);
                 //计算里程之和
-               sumKM= sumKM.add(trainStationEnd.getKm());
+                sumKM = sumKM.add(trainStationEnd.getKm());
 
 
-                DailyTrainTicket dailyTrainTicket=new DailyTrainTicket();
+                DailyTrainTicket dailyTrainTicket = new DailyTrainTicket();
 
                 dailyTrainTicket.setId(SnowUtil.getSnowflakeNextId());
                 dailyTrainTicket.setDate(date);
@@ -177,10 +176,10 @@ public class DailyTrainTicketService {
                 dailyTrainTicket.setEndPinyin(trainStationEnd.getNamePinyin());
                 dailyTrainTicket.setEndTime(trainStationEnd.getInTime());
                 dailyTrainTicket.setEndIndex(trainStationEnd.getIndex());
-                int ydz =dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.YDZ.getCode());
-                int edz =dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.EDZ.getCode());
-                int rw =dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.RW.getCode());
-                int yw =dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.YW.getCode());
+                int ydz = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.YDZ.getCode());
+                int edz = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.EDZ.getCode());
+                int rw = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.RW.getCode());
+                int yw = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.YW.getCode());
                 // 票价 = 里程之和 * 座位单价 * 车次类型系数
                 String trainType = dailyTrain.getType();
                 // 计算票价系数：TrainTypeEnum.priceRate
@@ -204,10 +203,31 @@ public class DailyTrainTicketService {
 
         }
 
-        LOG.info("生成日期{}该车次{}的余票信息结束",DateUtil.formatDate(date),trainCode);
+        LOG.info("生成日期{}该车次{}的余票信息结束", DateUtil.formatDate(date), trainCode);
 
 
+    }
 
+    /**
+     * 按照唯一键查询
+     */
+
+    public DailyTrainTicket selectByUnique(Date date, String trainCode, String start, String end) {
+
+        DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
+        dailyTrainTicketExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andStartEqualTo(start)
+                .andEndEqualTo(end);
+        List<DailyTrainTicket> dailyTrainTickets = dailyTrainTicketMapper.selectByExample(dailyTrainTicketExample);
+        if (ObjectUtil.isNotEmpty(dailyTrainTickets)) {
+            return dailyTrainTickets.get(0);
+        } else {
+            return null;
+
+
+        }
     }
 
 
