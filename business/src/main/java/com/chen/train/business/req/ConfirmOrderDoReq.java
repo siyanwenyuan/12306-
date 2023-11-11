@@ -52,8 +52,10 @@ public class ConfirmOrderDoReq {
     /**
      * 车票
      */
-    @NotNull(message = "【车票】不能为空")
+    @NotEmpty(message = "【车票】不能为空")
     private List<ConfirmOrderTicketReq> tickets;
+
+
 
     public List<ConfirmOrderTicketReq> getTickets() {
         return tickets;

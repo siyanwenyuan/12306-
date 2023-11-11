@@ -19,8 +19,8 @@ public class ConfirmOrderController {
     private ConfirmOrderService confirmOrderService;
 
     @PostMapping("/do")
-    public CommonResp<Object> save(@Valid @RequestBody ConfirmOrderDoReq confirmOrderSaveReq) {
-        confirmOrderService.doConfirm(confirmOrderSaveReq);
+    public CommonResp<Object> doConfirm(@Valid @RequestBody ConfirmOrderDoReq confirmOrderDoReq) {
+        confirmOrderService.doConfirm(confirmOrderDoReq);
 
         return new CommonResp<>();
 

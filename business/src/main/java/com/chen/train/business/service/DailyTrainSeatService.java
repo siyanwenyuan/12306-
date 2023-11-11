@@ -164,6 +164,23 @@ public class DailyTrainSeatService {
 
     }
 
+    /**
+     * 通过车厢查询座位
+     */
+
+    public List<DailyTrainSeat> selectByCarriage(Date date,String trainCode,Integer carriageIndex)
+    {
+        DailyTrainSeatExample dailyTrainSeatExample=new DailyTrainSeatExample();
+        //添加一个排序条件，通过索引进行排序
+        dailyTrainSeatExample.setOrderByClause("carriage_seat_index asc");
+        dailyTrainSeatExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andCarriageIndexEqualTo(carriageIndex);
+        return  dailyTrainSeatMapper.selectByExample(dailyTrainSeatExample);
+
+    }
+
 }
 
 

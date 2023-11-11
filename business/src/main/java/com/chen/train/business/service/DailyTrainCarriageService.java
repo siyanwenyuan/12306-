@@ -17,6 +17,7 @@ import com.chen.train.business.req.DailyTrainCarriageSaveReq;
 import com.chen.train.business.resp.DailyTrainCarriageQueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,8 @@ public class DailyTrainCarriageService {
 
        private static final Logger LOG = LoggerFactory.getLogger(DailyTrainCarriageService.class);
 
-    @Autowired
+
+       @Resource
     private  DailyTrainCarriageMapper dailyTrainCarriageMapper;
     @Autowired
     private TrainCarriageService trainCarriageService;
@@ -144,6 +146,18 @@ public class DailyTrainCarriageService {
 
 
 
+    }
+
+
+    public List<DailyTrainCarriage> selectBySeatType(Date date,String trainCode,String seatType){
+
+        DailyTrainCarriageExample dailyTrainCarriageExample=new DailyTrainCarriageExample();
+
+        dailyTrainCarriageExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andSeatTypeEqualTo(seatType);
+      return   dailyTrainCarriageMapper.selectByExample(dailyTrainCarriageExample);
     }
 
 
