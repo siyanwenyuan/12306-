@@ -152,6 +152,11 @@ public class ConfirmOrderService {
         //进行余票扣减业务,并判断余票数量是否足够
         reduceTickets(confirmOrderDoReq, dailyTrainTicket);
 
+        //保存最终选座结果
+        //先用临时变量进行保存
+        List<DailyTrainSeat> finalSeatList = new ArrayList<>();
+
+
         /**
          * 选座：
          *  通过座位偏移量进行计算，目的是减少循环次数
@@ -209,7 +214,7 @@ public class ConfirmOrderService {
             }
             LOG.info("计算的相对偏移值是： {}", offSetList);
 
-            getSeat(date, trainCode,
+            getSeat(finalSeatList, date, trainCode,
                     ticketReq0.getSeatTypeCode(),
                     ticketReq0.getSeat().split("")[0],//得到A1中的A
                     offSetList,
@@ -220,7 +225,7 @@ public class ConfirmOrderService {
         } else {
             LOG.info("本次购票没有选座");
             for (ConfirmOrderTicketReq confirmOrderTicketReq : tickets) {
-                getSeat(date, trainCode,
+                getSeat(finalSeatList, date, trainCode,
                         confirmOrderTicketReq.getSeatTypeCode(),
                         null,
                         null,
@@ -228,6 +233,8 @@ public class ConfirmOrderService {
                         dailyTrainTicket.getEndIndex());
             }
         }
+
+        LOG.info("最终的选座{}",finalSeatList);
 
 
         //一个车厢一个车厢的获取座位数据
@@ -252,10 +259,15 @@ public class ConfirmOrderService {
      * @param trainCode
      * @param seatType
      */
-    private void getSeat(Date date, String trainCode, String seatType,
+    private void getSeat(List<DailyTrainSeat> finalSeatList, Date date, String trainCode, String seatType,
                          String column, List<Integer> offSetList,
                          Integer startIndex,
                          Integer endIndex) {
+        //先声明一个临时变量
+       /* 临时变量作用在于如果第一个座位选中，但是第二个座位未被选中，此时将选中的第一个座位保存在临时变量中，最终将临时变量中的数据保存，
+         此时返回的值也包含座位一，这样即使第二个座位选座失败，也不会影响整个座位的选座结果*/
+        List<DailyTrainSeat> getSeatList = new ArrayList<>();
+
         //首先通过座位类型得到是属于哪个车厢的座位
         List<DailyTrainCarriage> dailyTrainCarriageList = dailyTrainCarriageService.selectBySeatType(date, trainCode, seatType);
         LOG.info("共查出{}个符合条件的车厢", dailyTrainCarriageList.size());
@@ -266,14 +278,35 @@ public class ConfirmOrderService {
                     trainCode,
                     dailyTrainCarriage.getIndex());
             LOG.info("车厢{}的座位数{}", dailyTrainCarriage.getIndex(), trainSeatList.size());
+            //此时需要清空临时列表，因为第一个车厢选座不够或则失败，则需要进入下一个车厢重新开始选座
+            getSeatList=new ArrayList<>();
 
-            for (DailyTrainSeat dailyTrainSeat : trainSeatList
-            ) {
+            for (int i = 0; i < trainSeatList.size(); i++) {
 
                 //对比column 如果存在column则和列号进行对比
 
+                DailyTrainSeat dailyTrainSeat = trainSeatList.get(i);
                 Integer seatIndex = dailyTrainSeat.getCarriageSeatIndex();
                 String col = dailyTrainSeat.getCol();
+
+                //判断该座位是否被选中过
+                 boolean alreadyChooseFlag=true;
+                for (DailyTrainSeat finalTrainSeat: finalSeatList) {
+                    if(finalTrainSeat.getId().equals(dailyTrainSeat.getId()))
+                    {
+
+                        alreadyChooseFlag=false;
+
+                        //跳出当前循环
+                        break;
+                    }
+
+                }
+                if(alreadyChooseFlag)
+                {
+                    LOG.info("当前座位{}被选中，不能重复选中，继续判断下一个座位",seatIndex);
+                    continue;
+                }
                 if (StrUtil.isBlank(column)) {
                     //如果存在，则对比序列号
                     if (!column.equals(col)) {
@@ -288,39 +321,67 @@ public class ConfirmOrderService {
                 Boolean isChoose = calSell(dailyTrainSeat, startIndex, endIndex);
                 if (isChoose) {
                     //如果为true则表示已经被选中，可以直接退回
+
+                    //将选中的座位加入到临时列表中
+                    //将选中的第一个座位加入临时列表中
+                    getSeatList.add(dailyTrainSeat);
                     LOG.info("选中座位");
 
 
                 } else {
+                    continue;
 
                 }
                 //根据offSet选剩下的座位
-              if(CollUtil.isNotEmpty(offSetList))
-              {
-                  //如果不为空，则表示已经有座位被选，则需要计算偏移值
-                  LOG.info("有偏移值{}，计算偏移值是否可选",offSetList);
-                  for (int i = 1; i <offSetList.size() ; i++) {
-                      //得到偏移值
-                      Integer offset = offSetList.get(i);
-                      //计算偏移值=当前座位索引+偏移值
-                      int nextIndex= seatIndex+offset;
-                      //通过偏移值得到下一个座位
-                      DailyTrainSeat nextDailyTrainSeat = trainSeatList.get(nextIndex);
-                      //计算偏移值后的座位是否可选
-                      Boolean isChooseNext = calSell(nextDailyTrainSeat, startIndex, endIndex);
-                      if (isChooseNext) {
-                          LOG.info("座位{}被选中",nextDailyTrainSeat.getCarriageSeatIndex());
-                      } else {
-                          LOG.info("座位{}未被选中",nextDailyTrainSeat.getCarriageSeatIndex());
-
-                      }
+                boolean isGetAllOffsetSeat = true;
+                if (CollUtil.isNotEmpty(offSetList)) {
+                    //如果不为空，则表示已经有座位被选，则需要计算偏移值
+                    LOG.info("有偏移值{}，计算偏移值是否可选", offSetList);
+                    for (int j = 1; j < offSetList.size(); j++) {
+                        //得到偏移值
+                        Integer offset = offSetList.get(i);
+                        //计算偏移值=当前座位索引+偏移值
+                        //    int nextIndex= seatIndex+offset;
+                        //座位在库的索引是从1开始的，解决索引计算边界问题
+                        int nextIndex = i + offset;
 
 
+                        //选取的座位必须是在用一个车厢
+                        if (nextIndex >= trainSeatList.size()) {
+                            LOG.info("座位{}不可选，偏移值已经超粗当前车厢座位索引", nextIndex);
+                            isGetAllOffsetSeat = false;
+                            break;
+                        }
+                        //通过偏移值得到下一个座位
+                        DailyTrainSeat nextDailyTrainSeat = trainSeatList.get(nextIndex);
+                        //计算偏移值后的座位是否可选
+                        Boolean isChooseNext = calSell(nextDailyTrainSeat, startIndex, endIndex);
+                        if (isChooseNext) {
+                            LOG.info("座位{}被选中", nextDailyTrainSeat.getCarriageSeatIndex());
+                            //计算过偏移值后的那个座位
+                            getSeatList.add(nextDailyTrainSeat);
+                        } else {
+
+                            LOG.info("座位{}未被选中", nextDailyTrainSeat.getCarriageSeatIndex());
+                            isGetAllOffsetSeat = false;
+                            break;
+                        }
 
 
-                  }
+                    }
 
-              }
+                }
+
+                //如果isGetAllOffsetSeat是false则说明选择失败，则结束当前循环，进入下一个循环，继续选座
+                if (!isGetAllOffsetSeat) {
+                    //此时未被选中，则需要清空
+                    getSeatList=new ArrayList<>();
+                    continue;
+                }
+                //最终保存选中的所有座位
+                finalSeatList.addAll(getSeatList);
+
+                return;
 
 
             }
