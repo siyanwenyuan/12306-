@@ -14,6 +14,8 @@ import org.springframework.core.env.Environment;
 @ComponentScan("com.chen")
 @MapperScan("com.chen.train.business.mapper")
 @EnableFeignClients("com.chen.train.business.feign")
+@ComponentScan("com.chen.train.business.mapper.cust")
+@MapperScan("com.chen.train.business.util")
 public class BusinessApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(BusinessApplication.class);

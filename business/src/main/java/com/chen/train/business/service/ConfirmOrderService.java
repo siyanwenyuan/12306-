@@ -240,15 +240,13 @@ public class ConfirmOrderService {
          * 但是在设计原则中最好是使用短事务，优于长事务，因为长事务会增加数据库资源
          * 所以在这里写了另外一个类，调用另外类中的事务处理
          */
-      afterConfirmOrderService.afterDoConfirm(dailyTrainTicket,finalSeatList,tickets,confirmOrder);
-
-
-
 
         //对座位表的售卖情况进行修改
         //对余票的情况进行修改
         //为会员增加购买记录
         //更新确认订单为成功
+      afterConfirmOrderService.afterDoConfirm(dailyTrainTicket,finalSeatList,tickets,confirmOrder);
+
     }
 
 
@@ -259,130 +257,6 @@ public class ConfirmOrderService {
      * @param trainCode
      * @param seatType
      */
-/*
-    private void getSeat(List<DailyTrainSeat> finalSeatList, Date date, String trainCode, String seatType, String column, List<Integer> offSetList, Integer startIndex, Integer endIndex) {
-        //先声明一个临时变量
-       */
-/* 临时变量作用在于如果第一个座位选中，但是第二个座位未被选中，此时将选中的第一个座位保存在临时变量中，最终将临时变量中的数据保存，
-         此时返回的值也包含座位一，这样即使第二个座位选座失败，也不会影响整个座位的选座结果*//*
-
-        List<DailyTrainSeat> getSeatList = new ArrayList<>();
-
-        //首先通过座位类型得到是属于哪个车厢的座位
-        List<DailyTrainCarriage> dailyTrainCarriageList = dailyTrainCarriageService.selectBySeatType(date, trainCode, seatType);
-        LOG.info("共查出{}个符合条件的车厢", dailyTrainCarriageList.size());
-        //一个车厢一个车厢进行座位的获取
-        //通过for循环得到座位列表
-        for (DailyTrainCarriage dailyTrainCarriage : dailyTrainCarriageList) {
-            List<DailyTrainSeat> trainSeatList = dailyTrainSeatService.selectByCarriage(date, trainCode, dailyTrainCarriage.getIndex());
-            LOG.info("车厢{}的座位数{}", dailyTrainCarriage.getIndex(), trainSeatList.size());
-            //此时需要清空临时列表，因为第一个车厢选座不够或则失败，则需要进入下一个车厢重新开始选座
-            getSeatList = new ArrayList<>();
-
-            for (int i = 0; i < trainSeatList.size(); i++) {
-
-                //对比column 如果存在column则和列号进行对比
-
-                DailyTrainSeat dailyTrainSeat = trainSeatList.get(i);
-                Integer seatIndex = dailyTrainSeat.getCarriageSeatIndex();
-                String col = dailyTrainSeat.getCol();
-
-                //判断该座位是否被选中过
-                boolean alreadyChooseFlag = true;
-                for (DailyTrainSeat finalTrainSeat : finalSeatList) {
-                    if (finalTrainSeat.getId().equals(dailyTrainSeat.getId())) {
-                        alreadyChooseFlag = false;
-                        //跳出当前循环
-                        break;
-                    }
-
-                }
-                if (alreadyChooseFlag) {
-                    LOG.info("当前座位{}被选中，不能重复选中，继续判断下一个座位", seatIndex);
-                    continue;
-                }
-                if (StrUtil.isBlank(column)) {
-                    //如果存在，则对比序列号
-                    if (!column.equals(col)) {
-                        LOG.info("座位{}列值不对，继续判断下一个列值，当前列值{}，目标列值", seatIndex, col, column);
-                        //继续比对
-                        continue;
-                    }
-                }
-
-                //计算某座位在区间内是否可卖
-                Boolean isChoose = calSell(dailyTrainSeat, startIndex, endIndex);
-                if (isChoose) {
-                    //如果为true则表示已经被选中，可以直接退回
-                    //将选中的座位加入到临时列表中
-                    //将选中的第一个座位加入临时列表中
-                    getSeatList.add(dailyTrainSeat);
-                    LOG.info("选中座位");
-
-                } else {
-                    continue;
-
-                }
-                //根据offSet选剩下的座位
-                boolean isGetAllOffsetSeat = true;
-                if (CollUtil.isNotEmpty(offSetList)) {
-                    //如果不为空，则表示已经有座位被选，则需要计算偏移值
-                    LOG.info("有偏移值{}，计算偏移值是否可选", offSetList);
-                    for (int j = 1; j < offSetList.size(); j++) {
-                        //得到偏移值
-                        Integer offset = offSetList.get(i);
-                        //计算偏移值=当前座位索引+偏移值
-                        //    int nextIndex= seatIndex+offset;
-                        //座位在库的索引是从1开始的，解决索引计算边界问题
-                        int nextIndex = i + offset;
-
-
-                        //选取的座位必须是在用一个车厢
-                        if (nextIndex >= trainSeatList.size()) {
-                            LOG.info("座位{}不可选，偏移值已经超粗当前车厢座位索引", nextIndex);
-                            isGetAllOffsetSeat = false;
-                            break;
-                        }
-                        //通过偏移值得到下一个座位
-                        DailyTrainSeat nextDailyTrainSeat = trainSeatList.get(nextIndex);
-                        //计算偏移值后的座位是否可选
-                        Boolean isChooseNext = calSell(nextDailyTrainSeat, startIndex, endIndex);
-                        if (isChooseNext) {
-                            LOG.info("座位{}被选中", nextDailyTrainSeat.getCarriageSeatIndex());
-                            //计算过偏移值后的那个座位
-                            getSeatList.add(nextDailyTrainSeat);
-                        } else {
-
-                            LOG.info("座位{}未被选中", nextDailyTrainSeat.getCarriageSeatIndex());
-                            isGetAllOffsetSeat = false;
-                            break;
-                        }
-
-
-                    }
-
-                }
-
-                //如果isGetAllOffsetSeat是false则说明选择失败，则结束当前循环，进入下一个循环，继续选座
-                if (!isGetAllOffsetSeat) {
-                    //此时未被选中，则需要清空
-                    getSeatList = new ArrayList<>();
-                    continue;
-                }
-                //最终保存选中的所有座位
-                finalSeatList.addAll(getSeatList);
-
-                return;
-
-
-            }
-
-        }
-
-
-    }
-*/
-
     private void getSeat(List<DailyTrainSeat> finalSeatList, Date date, String trainCode, String seatType, String column, List<Integer> offsetList, Integer startIndex, Integer endIndex) {
         List<DailyTrainSeat> getSeatList = new ArrayList<>();
         List<DailyTrainCarriage> carriageList = dailyTrainCarriageService.selectBySeatType(date, trainCode, seatType);
@@ -474,6 +348,8 @@ public class ConfirmOrderService {
 
 
 
+
+
     /**
      * 计算某座位在区间内是否可卖
      * 其实是对sell字段进行计算
@@ -520,6 +396,7 @@ public class ConfirmOrderService {
 
 
         }
+
 
 
     }
