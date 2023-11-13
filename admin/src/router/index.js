@@ -70,17 +70,25 @@ const routes = [
 
                     {
                         path: 'daily-train-seat',
-                        component: ()=>import('../views/main/business/daily-train-seat.vue'),
+                        component: () => import('../views/main/business/daily-train-seat.vue'),
                     },
                     {
                         path: 'daily-train-ticket',
-                        component: ()=>import('../views/main/business/daily-train-ticket.vue'),
+                        component: () => import('../views/main/business/daily-train-ticket.vue'),
                     },
                     {
                         path: 'confirm-order',
-                        component: ()=>import('../views/main/business/confirm-order.vue'),
+                        component: () => import('../views/main/business/confirm-order.vue'),
                     }
                 ]
+            },
+
+            {
+                path: 'member/',
+                children: [{
+                    path: 'ticket',
+                    component: () => import('../views/main/member/ticket.vue')
+                }]
             },
 
 

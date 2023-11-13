@@ -1,6 +1,8 @@
 package com.chen.train.business.controller;
 
 
+import com.chen.train.business.service.AfterConfirmOrderService;
+import com.chen.train.business.utils.SpringUtil;
 import com.chen.train.common.resp.CommonResp;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.business.req.ConfirmOrderQueryReq;
@@ -16,8 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class ConfirmOrderAdminController {
 
     @Autowired
-
     private ConfirmOrderService confirmOrderService;
+/*
+    ConfirmOrderService confirmOrderService  =  SpringUtil.getBean(ConfirmOrderService.class);
+*/
+
+
 
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody ConfirmOrderDoReq confirmOrderSaveReq) {

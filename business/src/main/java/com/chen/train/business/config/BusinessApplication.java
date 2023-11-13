@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @ComponentScan("com.chen")
 @MapperScan("com.chen.train.business.mapper")
+@EnableFeignClients("com.chen.train.business.feign")
 public class BusinessApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(BusinessApplication.class);
