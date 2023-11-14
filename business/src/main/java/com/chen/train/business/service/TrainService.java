@@ -19,6 +19,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -104,9 +105,14 @@ public class TrainService {
     /**
      *实现查询车次所有编号：
      */
+
+
     public List<TrainQueryResp> queryAll(){
 
         List<Train> trainList = selectAll();
+
+
+
         return BeanUtil.copyToList(trainList,TrainQueryResp.class);
     }
 

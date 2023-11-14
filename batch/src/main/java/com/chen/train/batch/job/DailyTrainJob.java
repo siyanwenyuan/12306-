@@ -41,6 +41,8 @@ public class DailyTrainJob implements Job {
          * 此处使用注解会出现bean注入失败的问题
          */
         BusinessFeign businessFeign =  SpringUtil.getBean(BusinessFeign.class);
+   /*     businessFeign.hello();*/
+
      /*   String hello = bean.hello();
         System.out.println(hello);*/
         Date date = new Date();

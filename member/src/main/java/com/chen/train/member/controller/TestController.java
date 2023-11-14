@@ -2,8 +2,10 @@ package com.chen.train.member.controller;
 
 
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +20,16 @@ public class TestController {
     @Value("${test.nacos}")
     private String nacos;
 
+    @Autowired
+    Environment environment;
+
     @GetMapping("/test")
     public String test(){
 
+        String port = environment.getProperty("local.server.port");
 
-        return nacos;
+        return port;
+
 
     }
 }

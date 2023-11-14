@@ -11,6 +11,7 @@ public class MemberTicketReq {
     /**
      * 乘客id
      */
+
     @NotNull(message = "【会员id】不能为空")
     private Long memberId;
 

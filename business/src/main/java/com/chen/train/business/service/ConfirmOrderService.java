@@ -360,47 +360,36 @@ public class ConfirmOrderService {
      * 当这个区间有1的话，也是代表有人购票
      */
     private boolean calSell(DailyTrainSeat dailyTrainSeat, Integer startIndex, Integer endIndex) {
-        //先得到对应的座位售卖信息sell
+        // 00001, 00000
         String sell = dailyTrainSeat.getSell();
-        //在对字段sell进行截取
+        //  000, 000
         String sellPart = sell.substring(startIndex, endIndex);
         if (Integer.parseInt(sellPart) > 0) {
-            //如果区间有>0则说明被人选中，则无法购票
-            LOG.info("座位{}在本次车间{}~{}已被选中，不可购票", dailyTrainSeat.getCarriageSeatIndex(), startIndex, endIndex);
+            LOG.info("座位{}在本次车站区间{}~{}已售过票，不可选中该座位", dailyTrainSeat.getCarriageSeatIndex(), startIndex, endIndex);
             return false;
         } else {
-            LOG.info("座位{}在本次车间{}~{}未被选中，可以购票", dailyTrainSeat.getCarriageSeatIndex(), startIndex, endIndex);
-            //此处表示已经被购票，则需要将其中的0进行替换为1
-            //变完前： 000
-            //变完后： 111
+            LOG.info("座位{}在本次车站区间{}~{}未售过票，可选中该座位", dailyTrainSeat.getCarriageSeatIndex(), startIndex, endIndex);
+            //  111,   111
             String curSell = sellPart.replace('0', '1');
-            //在前面填充： 0111  也即是在前面补0  其中最后一个参数代表的是最终补充完后的位数
+            // 0111,  0111
             curSell = StrUtil.fillBefore(curSell, '0', endIndex);
-            //在后面补充0  变 01110  其中最后一个参数代表的是最终补充后的参数
+            // 01110, 01110
             curSell = StrUtil.fillAfter(curSell, '0', sell.length());
-            //这下售票信息sell字段已经被补充修改完毕
 
             // 当前区间售票信息curSell 01110与库里的已售信息sell 00001按位与，即可得到该座位卖出此票后的售票详情
             // 15(01111), 14(01110 = 01110|00000)
-
-            //此处进行的是按位与的运算
             int newSellInt = NumberUtil.binaryToInt(curSell) | NumberUtil.binaryToInt(sell);
             //  1111,  1110
             String newSell = NumberUtil.getBinaryStr(newSellInt);
             // 01111, 01110
             newSell = StrUtil.fillBefore(newSell, '0', sell.length());
-            LOG.info("座位{}被选中，原售票信息：{}，车站区间：{}~{}，即：{}，最终售票信息：{}", dailyTrainSeat.getCarriageSeatIndex(), sell, startIndex, endIndex, curSell, newSell);
-
+            LOG.info("座位{}被选中，原售票信息：{}，车站区间：{}~{}，即：{}，最终售票信息：{}"
+                    , dailyTrainSeat.getCarriageSeatIndex(), sell, startIndex, endIndex, curSell, newSell);
             dailyTrainSeat.setSell(newSell);
             return true;
 
-
         }
-
-
-
     }
-
 
     /**
      * 余票扣减方法
