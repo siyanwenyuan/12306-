@@ -15,7 +15,11 @@ import com.chen.train.member.req.TicketSaveReq;
 import com.chen.train.member.resp.TicketQueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.bouncycastle.cms.bc.BcRSAKeyTransEnvelopedRecipient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +29,16 @@ import java.util.List;
 public class TicketService {
 
 
+    private static final Logger LOG = LoggerFactory.getLogger(TicketService.class);
+
     @Autowired
     private  TicketMapper ticketMapper;
 
+
+
     public void save(MemberTicketReq req) {
+
+        LOG.info("seata全局事务ID save: {}", RootContext.getXID());
         DateTime now = new DateTime().now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
 

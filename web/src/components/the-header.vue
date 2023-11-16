@@ -3,7 +3,7 @@
     <div class="logo" >
 
       <router-link to="/welcome" style="color: white; font-size: 18px">
-        WC12306
+       欢迎购票
       </router-link>
     </div>
 

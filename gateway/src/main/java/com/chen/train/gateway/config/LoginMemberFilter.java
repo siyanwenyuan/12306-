@@ -26,7 +26,10 @@ public class LoginMemberFilter implements Ordered, GlobalFilter {
         if (path.contains("/admin")
                 || path.contains("/hello")
                 || path.contains("/member/member/login")
-                || path.contains("/member/member/send-code")) {
+                || path.contains("/member/member/send-code")
+                 || path.contains("/business/Redis/setRedis")
+                 || path.contains("/business/Redis/getRedis")
+        ) {
             LOG.info("不需要登录验证：{}", path);
 
             //返回这个请求

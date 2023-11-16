@@ -37,7 +37,7 @@ export default defineComponent({
      * 查询所有的车次，用于车次下拉框
      */
     const queryAllTrain = () => {
-     /* let list = SessionStorage.get(SESSION_ALL_TRAIN);
+      /*let list = SessionStorage.get(SESSION_ALL_TRAIN);
       if (Tool.isNotEmpty(list)) {
         console.log("queryAllTrain 读取缓存");
         trains.value = list;

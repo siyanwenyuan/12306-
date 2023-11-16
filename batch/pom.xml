@@ -21,7 +21,6 @@
     <dependencies>
 
 
-
         <dependency>
             <groupId>com.chen</groupId>
             <artifactId>common</artifactId>
@@ -29,6 +28,8 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
+            <version>4.0.0</version>
+
         </dependency>
 
         <dependency>
@@ -91,6 +92,54 @@
             <version>1.4.6</version>
         </dependency>
 
+
+
+    <!--    &lt;!&ndash;测试版本&ndash;&gt;
+        <dependency>
+            <groupId>com.chen</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+
+        &lt;!&ndash;远程调用openfeign&ndash;&gt;
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        &lt;!&ndash;openfeign默认使用的是loadBalance的负载均衡器  &ndash;&gt;
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-loadbalancer</artifactId>
+        </dependency>
+
+        &lt;!&ndash; 限流熔断 &ndash;&gt;
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        &lt;!&ndash; sentinel + nacos &ndash;&gt;
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+-->
     </dependencies>
 
 
