@@ -32,6 +32,9 @@ public class DailyTrainService {
 
 
     @Autowired
+    SkTokenService skTokenService;
+
+    @Autowired
     private TrainService trainService;
 
     @Resource
@@ -189,6 +192,8 @@ public class DailyTrainService {
         //生成该车次的余票信息
         dailyTrainTicketService.genDaily(dailyTrain,date, train.getCode());
 
+        //生成令牌余量数
+        skTokenService.genDaily(date, train.getCode());
 
     }
 

@@ -15,8 +15,7 @@ import com.chen.train.member.req.TicketSaveReq;
 import com.chen.train.member.resp.TicketQueryResp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.seata.core.context.RootContext;
-import io.seata.spring.annotation.GlobalTransactional;
+
 import org.bouncycastle.cms.bc.BcRSAKeyTransEnvelopedRecipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,7 @@ public class TicketService {
 
     public void save(MemberTicketReq req) {
 
-        LOG.info("seata全局事务ID save: {}", RootContext.getXID());
+      //  LOG.info("seata全局事务ID save: {}", RootContext.getXID());
         DateTime now = new DateTime().now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
 

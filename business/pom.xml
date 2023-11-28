@@ -48,9 +48,30 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!-- sentinel + nacos -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+
+
+        <!-- 图形验证码 -->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+        </dependency>
+
+<!--
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
+-->
+
+        <!--引入sentinel-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
 
 
@@ -103,74 +124,13 @@
             <version>3.21.0</version>
         </dependency>
 
-
-
-        <!--测试版本-->
-<!--
-
+        <!--RocketMQ-->
         <dependency>
-            <groupId>com.chen</groupId>
-            <artifactId>common</artifactId>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
         </dependency>
 
-        &lt;!&ndash;远程调用openfeign&ndash;&gt;
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        &lt;!&ndash;openfeign默认使用的是loadBalance的负载均衡器  &ndash;&gt;
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-loadbalancer</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        &lt;!&ndash;暂不使用redisson，演示机是macbook m2，经常会启动失败，报错：连接不到redis或获取不到连接&ndash;&gt;
-        &lt;!&ndash;<dependency>&ndash;&gt;
-        &lt;!&ndash;    <groupId>org.redisson</groupId>&ndash;&gt;
-        &lt;!&ndash;    <artifactId>redisson-spring-boot-starter</artifactId>&ndash;&gt;
-        &lt;!&ndash;</dependency>&ndash;&gt;
-
-        &lt;!&ndash; 限流熔断 &ndash;&gt;
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-        </dependency>
-
-        &lt;!&ndash; sentinel + nacos &ndash;&gt;
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-datasource-nacos</artifactId>
-        </dependency>
-
-        &lt;!&ndash; 图形验证码 &ndash;&gt;
-    &lt;!&ndash;    <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-        </dependency>&ndash;&gt;
-
-        &lt;!&ndash;&lt;!&ndash;RocketMQ&ndash;&gt;&ndash;&gt;
-        &lt;!&ndash;<dependency>&ndash;&gt;
-        &lt;!&ndash;    <groupId>org.apache.rocketmq</groupId>&ndash;&gt;
-        &lt;!&ndash;    <artifactId>rocketmq-spring-boot-starter</artifactId>&ndash;&gt;
-        &lt;!&ndash;</dependency>&ndash;&gt;
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
--->
 
 
     </dependencies>

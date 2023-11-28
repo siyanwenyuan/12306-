@@ -29,6 +29,7 @@ public class LoginMemberFilter implements Ordered, GlobalFilter {
                 || path.contains("/member/member/send-code")
                  || path.contains("/business/Redis/setRedis")
                  || path.contains("/business/Redis/getRedis")
+                 || path.contains("/business/kaptcha")
         ) {
             LOG.info("不需要登录验证：{}", path);
 

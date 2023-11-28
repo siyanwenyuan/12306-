@@ -8,6 +8,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.chen.train.business.domain.*;
+import com.chen.train.business.req.SeatSellReq;
+import com.chen.train.business.resp.SeatSellResp;
 import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.chen.train.business.mapper.DailyTrainSeatMapper;
@@ -142,26 +144,23 @@ public class DailyTrainSeatService {
 
 
     }
+    public int countSeat(Date date, String trainCode) {
+        return countSeat(date, trainCode, null);
+    }
 
-    public int countSeat(Date date,String trainCode,String seatType)
-    {
-
-        DailyTrainSeatExample example=new DailyTrainSeatExample();
-        example.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode)
-                        .andSeatTypeEqualTo(seatType);
-
-
-        //查询座位个数
-        long count = dailyTrainSeatMapper.countByExample(example);
-        //如果是0 返回-1
-        if(count==0L)
-        {
+    public int countSeat(Date date, String trainCode, String seatType) {
+        DailyTrainSeatExample example = new DailyTrainSeatExample();
+        DailyTrainSeatExample.Criteria criteria = example.createCriteria();
+        criteria.andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode);
+        if (StrUtil.isNotBlank(seatType)) {
+            criteria.andSeatTypeEqualTo(seatType);
+        }
+        long l = dailyTrainSeatMapper.countByExample(example);
+        if (l == 0L) {
             return -1;
         }
-
-        return (int) count;
-
-
+        return (int) l;
     }
 
     /**
@@ -179,6 +178,21 @@ public class DailyTrainSeatService {
                 .andCarriageIndexEqualTo(carriageIndex);
         return  dailyTrainSeatMapper.selectByExample(dailyTrainSeatExample);
 
+    }
+
+    /**
+     * 查询某日某车次的所有座位
+     */
+    public List<SeatSellResp> querySeatSell(SeatSellReq req) {
+        Date date = req.getDate();
+        String trainCode = req.getTrainCode();
+        LOG.info("查询日期【{}】车次【{}】的座位销售信息", DateUtil.formatDate(date), trainCode);
+        DailyTrainSeatExample dailyTrainSeatExample = new DailyTrainSeatExample();
+        dailyTrainSeatExample.setOrderByClause("`carriage_index` asc, carriage_seat_index asc");
+        dailyTrainSeatExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode);
+        return BeanUtil.copyToList(dailyTrainSeatMapper.selectByExample(dailyTrainSeatExample), SeatSellResp.class);
     }
 
 }

@@ -31,8 +31,7 @@ import com.chen.train.common.resp.PageResp;
 import com.chen.train.common.util.SnowUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.seata.core.context.RootContext;
-import io.seata.spring.annotation.GlobalTransactional;
+
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
